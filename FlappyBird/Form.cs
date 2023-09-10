@@ -34,6 +34,10 @@ namespace FlappyBird
             topPipe2.MakeTransparent();
             topPipe2.RotateFlip(RotateFlipType.Rotate180FlipX);
             pbxTopPipe2.Image = topPipe2;
+
+            Bitmap ground = new Bitmap(@"C:\Repos\baby-joda\FlappyBird\Images\gound.png");
+            pbxGround.Image = ground;
+            pbxGround.BringToFront(); 
         }
 
         private void gameTimer_Tick(object sender, EventArgs e)
@@ -51,16 +55,18 @@ namespace FlappyBird
 
                 if (pbxTopPipe.Location.X == 200)
                 {
+                    int yPos = setPipes();
                     pbxTopPipe2.Visible = true;
                     pbxBottomPipe2.Visible = true;
-                    pbxTopPipe2.Location = new Point(800, setPipes());
-                    pbxBottomPipe2.Location = new Point(800, (setPipes() + 750));
+                    pbxTopPipe2.Location = new Point(800, yPos);
+                    pbxBottomPipe2.Location = new Point(800, (yPos + 775));
                 }
 
                 if (pbxTopPipe2.Location.X == 200)
                 {
-                    pbxTopPipe.Location = new Point(800, setPipes());
-                    pbxBottomPipe.Location = new Point(800, (setPipes() + 750));
+                    int yPos = setPipes();
+                    pbxTopPipe.Location = new Point(800, yPos);
+                    pbxBottomPipe.Location = new Point(800, (yPos + 775));
                 }
 
                 pbxBird.Top += gravity;
@@ -71,14 +77,14 @@ namespace FlappyBird
             }
             else
             {
-                Console.WriteLine("Hit" + Environment.NewLine);
+                
             }   
         }
 
         int setPipes()
         {
             Random random = new Random();
-            int pipePosY = random.Next(-540, -310);
+            int pipePosY = random.Next(-540, -335);
 
             return pipePosY;
         }
@@ -96,7 +102,7 @@ namespace FlappyBird
 
         bool GameOver()
         {
-            if (pbxBird.Location.Y + 55 >= pbxGround.Location.Y)
+            if (pbxBird.Bounds.IntersectsWith(pbxGround.Bounds))
             {
                 return true;
             }
@@ -104,19 +110,19 @@ namespace FlappyBird
             {
                 return true;
             }
-            else if (pbxBird.Location.X >= pbxBottomPipe.Location.X && pbxBird.Location.X + 75 <= pbxBottomPipe.Location.X + 90 && pbxBird.Location.Y + 55 >= pbxBottomPipe.Location.Y)
+            else if (pbxBird.Bounds.IntersectsWith(pbxBottomPipe.Bounds))
             {
                 return true;
             }
-            else if (pbxBird.Location.X >= pbxTopPipe.Location.X && pbxBird.Location.X + 75 <= pbxTopPipe.Location.X + 90 && pbxBird.Location.Y <= pbxTopPipe.Location.Y + 600)
+            else if (pbxBird.Bounds.IntersectsWith(pbxTopPipe.Bounds))
             {
                 return true;
             }
-            else if (pbxBird.Location.X >= pbxBottomPipe2.Location.X && pbxBird.Location.X + 75 <= pbxBottomPipe2.Location.X + 90 && pbxBird.Location.Y + 55 >= pbxBottomPipe2.Location.Y)
+            else if (pbxBird.Bounds.IntersectsWith(pbxBottomPipe2.Bounds))
             {
                 return true;
             }
-            else if (pbxBird.Location.X >= pbxTopPipe2.Location.X && pbxBird.Location.X + 75 <= pbxTopPipe2.Location.X + 90 && pbxBird.Location.Y <= pbxTopPipe2.Location.Y + 600)
+            else if (pbxBird.Bounds.IntersectsWith(pbxTopPipe2.Bounds))
             {
                 return true;
             }

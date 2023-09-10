@@ -67,6 +67,7 @@
             // 
             // pbxBottomPipe
             // 
+            this.pbxBottomPipe.BackColor = System.Drawing.Color.Transparent;
             this.pbxBottomPipe.Image = global::FlappyBird.Properties.Resources.pipe;
             this.pbxBottomPipe.Location = new System.Drawing.Point(525, 340);
             this.pbxBottomPipe.Name = "pbxBottomPipe";
@@ -77,6 +78,7 @@
             // 
             // pbxTopPipe
             // 
+            this.pbxTopPipe.BackColor = System.Drawing.Color.Transparent;
             this.pbxTopPipe.Image = global::FlappyBird.Properties.Resources.pipe;
             this.pbxTopPipe.Location = new System.Drawing.Point(525, -440);
             this.pbxTopPipe.Name = "pbxTopPipe";
@@ -93,6 +95,7 @@
             // 
             // pbxBottomPipe2
             // 
+            this.pbxBottomPipe2.BackColor = System.Drawing.Color.Transparent;
             this.pbxBottomPipe2.Cursor = System.Windows.Forms.Cursors.Default;
             this.pbxBottomPipe2.Image = global::FlappyBird.Properties.Resources.pipe;
             this.pbxBottomPipe2.Location = new System.Drawing.Point(635, 340);
@@ -105,6 +108,7 @@
             // 
             // pbxTopPipe2
             // 
+            this.pbxTopPipe2.BackColor = System.Drawing.Color.Transparent;
             this.pbxTopPipe2.Image = global::FlappyBird.Properties.Resources.pipe;
             this.pbxTopPipe2.Location = new System.Drawing.Point(635, -440);
             this.pbxTopPipe2.Name = "pbxTopPipe2";
