@@ -69,6 +69,11 @@ namespace FlappyBird
         {
             gravity = -12;
             runGame = true;
+            if (GameOver())
+            {
+                RestartGame();
+                runGame = true;
+            }
         }
 
         private void Form_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -83,11 +88,8 @@ namespace FlappyBird
             {
                 GamePhysics();
                 points = CountPoints(points);
-            }
-            else
-            {
-                RestartGame();
-            }
+                Console.WriteLine(points);
+            } 
         }
 
         void GamePhysics()
@@ -164,6 +166,7 @@ namespace FlappyBird
             pbxBottomPipe2.Location = new Point(startPosPipes, (yPos2 + 775));
             pbxTopPipe2.Location = new Point(startPosPipes, yPos2);
 
+            points = 0;
             runGame = false;
         }
 
