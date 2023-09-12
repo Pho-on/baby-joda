@@ -8,6 +8,8 @@ namespace FlappyBird
     {
         int gameSpeed = 5;
         int gravity = 5;
+        int startPosPipes = 800;
+        int points = 0;
         bool runGame = false;
 
         public Form()
@@ -41,8 +43,8 @@ namespace FlappyBird
             pbxGround.BringToFront();
 
             int yPos = setPipes();
-            pbxBottomPipe.Location = new Point(1200, yPos);
-            pbxTopPipe.Location = new Point(1200, yPos);
+            pbxTopPipe.Location = new Point(startPosPipes, yPos);
+            pbxBottomPipe.Location = new Point(startPosPipes, (yPos + 775));
         }
 
         private void gameTimer_Tick(object sender, EventArgs e)
@@ -80,12 +82,8 @@ namespace FlappyBird
             if (!GameOver() && runGame)
             {
                 pbxBird.Top += gravity;
-
-                while (pbxTopPipe.Location.X < pbxTopPipe2.Location.X)
-                {
-                    pbxTopPipe2.Left -= gameSpeed;
-                    pbxBottomPipe2.Left -= gameSpeed;
-                }
+                pbxTopPipe2.Left -= gameSpeed;
+                pbxBottomPipe2.Left -= gameSpeed;
                 pbxTopPipe.Left -= gameSpeed;
                 pbxBottomPipe.Left -= gameSpeed;
 
@@ -103,15 +101,15 @@ namespace FlappyBird
                     int yPos = setPipes();
                     pbxTopPipe2.Visible = true;
                     pbxBottomPipe2.Visible = true;
-                    pbxTopPipe2.Location = new Point(800, yPos);
-                    pbxBottomPipe2.Location = new Point(800, (yPos + 775));
+                    pbxTopPipe2.Location = new Point(startPosPipes, yPos);
+                    pbxBottomPipe2.Location = new Point(startPosPipes, (yPos + 775));
                 }
 
                 if (pbxTopPipe2.Location.X == 200)
                 {
                     int yPos = setPipes();
-                    pbxTopPipe.Location = new Point(800, yPos);
-                    pbxBottomPipe.Location = new Point(800, (yPos + 775));
+                    pbxTopPipe.Location = new Point(startPosPipes, yPos);
+                    pbxBottomPipe.Location = new Point(startPosPipes, (yPos + 775));
                 }
             }
             else
@@ -154,13 +152,11 @@ namespace FlappyBird
         {
             int yPos1 = setPipes();
             int yPos2 = setPipes();
-            pbxBottomPipe.Location = new Point(1200, yPos1);
-            pbxTopPipe.Location = new Point(1200, yPos1 + 775);
-
-            pbxTopPipe2.Visible = false;
-            pbxBottomPipe2.Visible = false;
-            pbxTopPipe2.Location = new Point(800, yPos2);
-            pbxBottomPipe2.Location = new Point(800, (yPos2 + 775));
+            pbxBird.Location = new Point(145, 195);
+            pbxBottomPipe.Location = new Point(startPosPipes, (yPos1 + 775));
+            pbxTopPipe.Location = new Point(startPosPipes, yPos1);
+            pbxBottomPipe2.Location = new Point(startPosPipes, (yPos2 + 775));
+            pbxTopPipe2.Location = new Point(startPosPipes, yPos2);
 
             runGame = false;
         }
