@@ -11,9 +11,9 @@ using System.Windows.Forms;
 namespace UltimateTicTacToe
 {
     /*
-        pbx size = (47; 47)
-        mellanrum mellan rutor = 2px
-        outline på playingboard = 4px
+        pbx size = (44; 44)
+        mellanrum mellan rutor och outline = 7px
+        start för xy på de olika 3x3 rutorna...
     */
 
     public partial class Form : System.Windows.Forms.Form
