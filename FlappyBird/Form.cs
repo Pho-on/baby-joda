@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Security.Cryptography;
 using System.Threading;
 
 namespace FlappyBird
@@ -10,6 +11,7 @@ namespace FlappyBird
         int gravity = 5;
         int startPosPipes = 800;
         int points = 0;
+        int maxPoints = 0;
         bool runGame = false;
 
         public Form()
@@ -45,6 +47,9 @@ namespace FlappyBird
             int yPos = setPipes();
             pbxTopPipe.Location = new Point(startPosPipes, yPos);
             pbxBottomPipe.Location = new Point(startPosPipes, (yPos + 775));
+            pbxTopPipe2.Location = new Point((startPosPipes + 100), yPos);
+            pbxBottomPipe2.Location = new Point((startPosPipes + 100), yPos + 775);
+
         }
 
         private void gameTimer_Tick(object sender, EventArgs e)
@@ -87,8 +92,7 @@ namespace FlappyBird
             if (!GameOver() && runGame)
             {
                 GamePhysics();
-                points = CountPoints(points);
-                Console.WriteLine(points);
+                CountPoints();
             } 
         }
 
@@ -170,13 +174,21 @@ namespace FlappyBird
             runGame = false;
         }
 
-        int CountPoints(int points)
+        void CountPoints()
         {
             if (pbxBird.Location.X == (pbxTopPipe.Location.X + 90) || pbxBird.Location.X == (pbxTopPipe2.Location.X + 90))
             {
                 points++;
+                if (points <= maxPoints)
+                {
+                    maxPoints = maxPoints;
+                }
+                else
+                {
+                    maxPoints = points;
+                }
+                Console.WriteLine("Score: " + points + ", Max score: " + maxPoints);
             }
-            return points;
         }
     }
 }
