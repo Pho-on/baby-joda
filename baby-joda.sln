@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlappyBird", "FlappyBird\FlappyBird.csproj", "{F1B05A7E-D4CC-438A-8BDE-1E6B84A3D871}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimateTicTacToe", "UltimateTicTacToe\UltimateTicTacToe.csproj", "{89AD6BEA-FA4A-4DFB-AEA2-7E46E9CAD717}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{F1B05A7E-D4CC-438A-8BDE-1E6B84A3D871}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1B05A7E-D4CC-438A-8BDE-1E6B84A3D871}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1B05A7E-D4CC-438A-8BDE-1E6B84A3D871}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89AD6BEA-FA4A-4DFB-AEA2-7E46E9CAD717}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89AD6BEA-FA4A-4DFB-AEA2-7E46E9CAD717}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89AD6BEA-FA4A-4DFB-AEA2-7E46E9CAD717}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89AD6BEA-FA4A-4DFB-AEA2-7E46E9CAD717}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
