@@ -10,6 +10,12 @@ using System.Windows.Forms;
 
 namespace UltimateTicTacToe
 {
+    /*
+        pbx size = (47; 47)
+        mellanrum mellan rutor = 2px
+        outline på playingboard = 4px
+    */
+
     public partial class Form : System.Windows.Forms.Form
     {
         public Form()

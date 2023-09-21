@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UltimateTicTacToe
+﻿namespace UltimateTicTacToe
 {
 
     class PlayingBoard
     {
+        private int startX;
+        private int startY;
 
-        public PlayingBoard()
+        public PlayingBoard(int startX, int startY)
         {
-            
+            this.startX = startX;
+            this.startY = startY;
         }
     }
 }
