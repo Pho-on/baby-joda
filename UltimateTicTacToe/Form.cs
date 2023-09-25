@@ -7,6 +7,14 @@ using System.Windows.Forms;
 
 namespace UltimateTicTacToe
 {
+    /*
+     - Gör 9st 3x3 pbx ist för en stor
+     - Gör en klasser 
+        - en för varje liten ruta (81st)
+           - pbx, bool träff (är rutan använd), bool isCircle (cross eller cirkle)
+        - en för varje 3x3 (är hela ifyld, isf vem vann)
+        - en för hela planen (vilken är den nästa 3x3, vem van totalt)
+    */
 
     public partial class Form : System.Windows.Forms.Form
     {
