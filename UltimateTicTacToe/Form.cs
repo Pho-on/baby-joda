@@ -76,7 +76,7 @@ namespace UltimateTicTacToe
                 BackColor = Color.White,
                 Size = new Size(targetSize, targetSize),
                 Location = new Point(xPos, yPos),
-                Image = RotateImage(cross, 45),
+                Image = cross,
             };
 
             this.Controls.Add(Cross);
@@ -186,29 +186,9 @@ namespace UltimateTicTacToe
             }
         }
 
-        public Bitmap RotateImage(Image image, float angle)
-        {
-            if (image == null)
-            {
-                throw new ArgumentNullException("image");
-            }
-            PointF offset = new PointF(600, 600);
-            Bitmap rotatedImage = new Bitmap(image.Width, image.Height);
-            rotatedImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+        /*
 
-            Graphics g = Graphics.FromImage(rotatedImage);
-
-            g.TranslateTransform(offset.X, offset.Y);
-
-            g.RotateTransform(angle);
-
-            g.TranslateTransform(-offset.X, -offset.Y);
-
-            g.DrawImage(image, new PointF(0, 0));
-
-            return rotatedImage;
-        }
-
+        
         bool Is3x3Full()
         {
             if (playableGrids[0] == { 0, 0 })
@@ -217,5 +197,6 @@ namespace UltimateTicTacToe
             }
             
         }
+        */
     }
 }
