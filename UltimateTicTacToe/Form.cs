@@ -15,46 +15,74 @@ namespace UltimateTicTacToe
 
     public partial class Form : System.Windows.Forms.Form
     {
-
-        bool circleTurn = true;
+        Square square;
+        Small3x3 small3x3;
 
         public Form()
         {
             InitializeComponent();
 
-            EventHandlerPictureboxes(); 
+            MakePlayingBoard();
         }
 
-        void EventHandlerPictureboxes()
+        void MakePlayingBoard()
         {
-            foreach (var picturebox in this.Controls.OfType<PictureBox>())
+            int xPos;
+            int yPos;
+
+            for (int x = 0; x < 3; x++)
             {
-                picturebox.BackColor = Color.White;
-                picturebox.Click += PictureBoxClick;
+                for (int y = 0; y < 3; y++)
+                {
+                    if (x == 0 && y == 0)
+                    {
+                        xPos = (x * 150) + (5 * (x + 1));
+                        yPos = (y * 150) + (5 * (y + 1));
+                    }
+                    else if (x == 0 && y == 1)
+                    {
+                        xPos = (x * 150) + (5 * (x + 1));
+                        yPos = (y * 150) + (2 * (y + 1) + 3);
+                    }
+                    else if (x == 0 && y == 2)
+                    {
+                        xPos = (x * 150) + (5 * (x + 1));
+                        yPos = (y * 150) + (2 * (y + 1) + 3);
+                    }
+                    else if (x == 1 && y == 0)
+                    {
+                        xPos = (x * 150) + (2 * (x + 1) + 3);
+                        yPos = (y * 150) + (5 * (y + 1));
+                    }
+                    else if (x == 2 && y == 0)
+                    {
+                        xPos = (x * 150) + (2 * (x + 1) + 3);
+                        yPos = (y * 150) + (5 * (y + 1));
+                    }
+                    else
+                    {
+                        xPos = (x * 150) + (2 * (x + 1) + 3);
+                        yPos = (y * 150) + (2 * (y + 1) + 3);
+                    }
+
+                    small3x3 = new Small3x3(xPos, yPos);
+                    this.Controls.Add(small3x3.flp);
+                }
+            }
+
+            foreach (var flp in this.Controls.OfType<FlowLayoutPanel>())
+            {
+                for (int i = 0; i < 9; i++)
+                {
+                    square = new Square();
+                    flp.Controls.Add(square.pbx);
+                }
             }
         }
 
         void PictureBoxClick(object sender, EventArgs e)
         {
-            Bitmap circle = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Circle.png");
-            Bitmap cross = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Cross.png");
 
-            var pictureBoxName = ((PictureBox)sender).Name;
-            PictureBox selected = (PictureBox)this.Controls[pictureBoxName];
-            selected.SizeMode = PictureBoxSizeMode.StretchImage;
-
-            if (circleTurn)
-            {
-                selected.Image = circle;
-                circleTurn = false;
-            }
-            else
-            {
-                selected.Image = cross;
-                circleTurn = true;
-            }
-
-            selected.Enabled = false;
         }
     }
 }
