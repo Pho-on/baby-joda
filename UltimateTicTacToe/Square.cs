@@ -12,17 +12,19 @@ namespace UltimateTicTacToe
         private bool circleTurn;
         private bool isUsed = false;
         private Bitmap image;
+        private string name;
 
         public Square()
         {
             Padding margin = new Padding(1, 1, 1, 1);
             pbx = new PictureBox()
-            { 
+            {
                 Width = size,
                 Height = size,
                 BackColor = Color.White,
                 Image = WichImage(),
-                Margin = margin
+                Margin = margin,
+                Name = name
             };
         }
 
@@ -31,6 +33,18 @@ namespace UltimateTicTacToe
             get; set;
         }
 
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                name = value;
+            }
+        } 
+
         private Bitmap WichImage()
         {
             if (isUsed)
@@ -38,10 +52,12 @@ namespace UltimateTicTacToe
                 if (circleTurn)
                 {
                     return new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Circle.png");
+                    circleTurn = false;
                 }
                 else
                 {
                     return new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Cross.png");
+                    circleTurn = true;
                 }
             }
 

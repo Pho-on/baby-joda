@@ -18,6 +18,8 @@ namespace UltimateTicTacToe
         Square square;
         Small3x3 small3x3;
 
+        bool circleTurn = true;
+
         public Form()
         {
             InitializeComponent();
@@ -75,7 +77,7 @@ namespace UltimateTicTacToe
                 for (int i = 0; i < 9; i++)
                 {
                     square = new Square();
-                    //square.Click += PictureBoxClick();
+                    square.pbx.Click += PictureBoxClick;
                     flp.Controls.Add(square.pbx);
                 }
             }
@@ -83,7 +85,21 @@ namespace UltimateTicTacToe
 
         void PictureBoxClick(object sender, EventArgs e)
         {
-            
+            // behöver något för att hitta vilken pbx som klickats
+
+            if (!square.IsUsed)
+            {
+                square.IsUsed = false;
+                square.CircleTurn = circleTurn;
+                if (circleTurn)
+                {
+                    circleTurn = false;
+                }
+                else
+                {
+                    circleTurn = true;
+                }
+            }
         }
     }
 }
