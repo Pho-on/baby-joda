@@ -75,6 +75,7 @@ namespace UltimateTicTacToe
                 for (int i = 0; i < 9; i++)
                 {
                     square = new Square();
+                    //square.Click += PictureBoxClick();
                     flp.Controls.Add(square.pbx);
                 }
             }
@@ -82,7 +83,7 @@ namespace UltimateTicTacToe
 
         void PictureBoxClick(object sender, EventArgs e)
         {
-
+            
         }
     }
 }
