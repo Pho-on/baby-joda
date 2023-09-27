@@ -8,8 +8,8 @@ namespace UltimateTicTacToe
     /*
      - Gör en klasser 
         - en för varje liten ruta (81st)
-           - pbx, bool träff (är rutan använd), bool isCircle (cross eller cirkle)
-        - en för varje 3x3 (är hela ifyld, isf vem vann)
+           - pbx, bool träff (är rutan använd), index för varje box i flp (1-9 per flp)
+        - en för varje 3x3 (är hela ifyld, isf vem vann), index för varje flp (1-9)
         - en för hela planen (vilken är den nästa 3x3, vem van totalt)
     */
 
