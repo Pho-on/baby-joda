@@ -34,7 +34,7 @@ namespace UltimateTicTacToe
             {
                 for (int y = 0; y < 3; y++)
                 {
-                    small3x3 = new Small3x3(flpPosX(x, y), flpPosY(x, y));
+                    small3x3 = new Small3x3(FlpPosX(x, y), FlpPosY(x, y));
                     this.Controls.Add(small3x3.flp);
                 }
             }
@@ -70,7 +70,7 @@ namespace UltimateTicTacToe
             }
         }
 
-        int flpPosX(int x, int y)
+        int FlpPosX(int x, int y)
         {
             int xPos;
             int size = 150;
@@ -86,7 +86,7 @@ namespace UltimateTicTacToe
             return xPos;
         }
 
-        int flpPosY(int x, int y)
+        int FlpPosY(int x, int y)
         {
             int yPos;
             int size = 150;
