@@ -84,7 +84,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Images\PlayingBoard.jpg" />
+    <Folder Include="Images\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
