@@ -1,6 +1,4 @@
 ﻿using System.Drawing;
-using System.Drawing.Printing;
-using System.Drawing.Text;
 using System.Windows.Forms;
 
 namespace UltimateTicTacToe
@@ -9,9 +7,8 @@ namespace UltimateTicTacToe
     internal class Square
     {
         private int size = 48;
-        private bool circleTurn;
         private bool isUsed = false;
-        private Bitmap image;
+        private Bitmap image = null;
         private string name;
 
         public Square()
@@ -22,7 +19,7 @@ namespace UltimateTicTacToe
                 Width = size,
                 Height = size,
                 BackColor = Color.White,
-                Image = WichImage(),
+                Image = image,
                 Margin = margin,
                 Name = name
             };
@@ -45,34 +42,15 @@ namespace UltimateTicTacToe
             }
         } 
 
-        private Bitmap WichImage()
-        {
-            if (isUsed)
-            {
-                if (circleTurn)
-                {
-                    return new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Circle.png");
-                    circleTurn = false;
-                }
-                else
-                {
-                    return new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Cross.png");
-                    circleTurn = true;
-                }
-            }
-
-            return null;
-        }
-
-        public bool CircleTurn
+        public Bitmap Image
         {
             get
             {
-                return circleTurn;
+                return image;
             }
             set
             {
-                circleTurn = value;
+                image = value;
             }
         }
 
