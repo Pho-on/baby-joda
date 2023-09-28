@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -18,6 +19,9 @@ namespace UltimateTicTacToe
         Square square;
         Small3x3 small3x3;
 
+        List<Square> squareList = new List<Square>();
+        List<Small3x3> small3x3List = new List<Small3x3>();
+
         bool circleTurn;
 
         public Form()
@@ -30,43 +34,60 @@ namespace UltimateTicTacToe
 
         void MakePlayingBoard()
         {
-            for (int x = 0; x < 3; x++)
+            int i = 1;
+            for (int y = 0; y < 3; y++)
             {
-                for (int y = 0; y < 3; y++)
+                for (int x = 0; x < 3; x++)
                 {
                     small3x3 = new Small3x3(FlpPosX(x, y), FlpPosY(x, y));
-                    this.Controls.Add(small3x3.flp);
+                    small3x3.TabIndex = i;
+                    this.Controls.Add(small3x3.FlowLayoutPanel);
+                    small3x3List.Add(small3x3);
+                    i++;
                 }
             }
 
             foreach (var flp in this.Controls.OfType<FlowLayoutPanel>())
             {
-                for (int i = 0; i < 9; i++)
+                for (int j = 0; j < 9; j++)
                 {
                     square = new Square();
-                    square.pbx.Click += PictureBoxClick;
-                    flp.Controls.Add(square.pbx);
+                    square.TabIndex = j + 1;
+                    square.PictureBox.Click += PictureBoxClick;
+                    flp.Controls.Add(square.PictureBox);
+                    squareList.Add(square);
                 }
             }
         }
 
         void PictureBoxClick(object sender, EventArgs e)
         {
+            (sender as Square).TabIndex
             // behöver något för att hitta vilken pbx som klickats
-
-            if (!square.IsUsed)
+            foreach (FlowLayoutPanel flp in this.Controls.OfType<FlowLayoutPanel>())
             {
-                if (circleTurn)
+                if (flp.Contains((PictureBox)sender))
                 {
-                    square.Image = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Circle.png");
-                    circleTurn = false;
+                    foreach (var square in squareList)
+                    {
+                        if (((PictureBox)sender) == square.PictureBox)
+                        {
+                            if (circleTurn)
+                            {
+                                square.Image = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Circle.png");
+                                circleTurn = false;
+                            }
+                            else
+                            {
+                                square.Image = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Cross.png");
+                                circleTurn = true;
+                            }
+                            Console.WriteLine(flp.TabIndex + ", " + square.TabIndex + " " + square.Image);
+                            square.Enabled = false;
+                            square.PictureBox.Invalidate();
+                        }
+                    }
                 }
-                else
-                {
-                    square.Image = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Cross.png");
-                    circleTurn = true;
-                }
-                square.IsUsed = true;
             }
         }
 

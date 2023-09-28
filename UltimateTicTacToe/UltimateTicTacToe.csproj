@@ -61,7 +61,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Small3x3.cs" />
-    <Compile Include="Square.cs" />
+    <Compile Include="Square.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="Form.resx">
       <DependentUpon>Form.cs</DependentUpon>
     </EmbeddedResource>

@@ -1,69 +1,26 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace UltimateTicTacToe
 {
 
-    internal class Square
+    internal class Square : PictureBox
     {
         private int size = 48;
-        private bool isUsed = false;
-        private Bitmap image = null;
-        private string name;
 
         public Square()
         {
-            Padding margin = new Padding(1, 1, 1, 1);
-            pbx = new PictureBox()
-            {
-                Width = size,
-                Height = size,
-                BackColor = Color.White,
-                Image = image,
-                Margin = margin,
-                Name = name
-            };
+            Width = size;
+            Height = size;
+            BackColor = Color.White;
+            Margin = new Padding(1, 1, 1, 1);
+            Enabled = true;
+            SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
-        public PictureBox pbx
-        {
-            get; set;
-        }
+        public int Index { get; set; }
 
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-            set
-            {
-                name = value;
-            }
-        } 
-
-        public Bitmap Image
-        {
-            get
-            {
-                return image;
-            }
-            set
-            {
-                image = value;
-            }
-        }
-
-        public bool IsUsed
-        {
-            get
-            {
-                return isUsed;
-            }
-            set
-            {
-                isUsed = value;
-            }
-        }
+        public int ParentIndex { get; set; }
     }
 }
