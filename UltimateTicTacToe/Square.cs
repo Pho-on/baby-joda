@@ -9,8 +9,11 @@ namespace UltimateTicTacToe
     {
         private int size = 48;
 
-        public Square()
+        public Square(int index, int parentIndex)
         {
+            this.Index = index;
+            this.ParentIndex = parentIndex;
+
             Width = size;
             Height = size;
             BackColor = Color.White;

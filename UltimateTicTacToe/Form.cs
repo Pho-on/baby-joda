@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
 
 namespace UltimateTicTacToe
 {
@@ -19,9 +16,6 @@ namespace UltimateTicTacToe
         Square square;
         Small3x3 small3x3;
 
-        List<Square> squareList = new List<Square>();
-        List<Small3x3> small3x3List = new List<Small3x3>();
-
         bool circleTurn;
 
         public Form()
@@ -35,60 +29,43 @@ namespace UltimateTicTacToe
         void MakePlayingBoard()
         {
             int i = 1;
+
             for (int y = 0; y < 3; y++)
             {
                 for (int x = 0; x < 3; x++)
                 {
-                    small3x3 = new Small3x3(FlpPosX(x, y), FlpPosY(x, y));
-                    small3x3.TabIndex = i;
-                    this.Controls.Add(small3x3.FlowLayoutPanel);
-                    small3x3List.Add(small3x3);
-                    i++;
-                }
-            }
+                    small3x3 = new Small3x3(FlpPosX(x, y), FlpPosY(x, y), i);
+                    this.Controls.Add(small3x3);
 
-            foreach (var flp in this.Controls.OfType<FlowLayoutPanel>())
-            {
-                for (int j = 0; j < 9; j++)
-                {
-                    square = new Square();
-                    square.TabIndex = j + 1;
-                    square.PictureBox.Click += PictureBoxClick;
-                    flp.Controls.Add(square.PictureBox);
-                    squareList.Add(square);
+                    for (int j = 0; j < 9; j++)
+                    {
+                        square = new Square((j + 1), i);
+                        square.Click += PictureBoxClick;
+                        small3x3.Controls.Add(square);
+                    }
+                    i++;
                 }
             }
         }
 
         void PictureBoxClick(object sender, EventArgs e)
         {
-            (sender as Square).TabIndex
-            // behöver något för att hitta vilken pbx som klickats
-            foreach (FlowLayoutPanel flp in this.Controls.OfType<FlowLayoutPanel>())
+            var pbx = (sender as Square);
+            int index = pbx.Index;
+            int parentIndex = pbx.ParentIndex;
+
+            if (circleTurn)
             {
-                if (flp.Contains((PictureBox)sender))
-                {
-                    foreach (var square in squareList)
-                    {
-                        if (((PictureBox)sender) == square.PictureBox)
-                        {
-                            if (circleTurn)
-                            {
-                                square.Image = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Circle.png");
-                                circleTurn = false;
-                            }
-                            else
-                            {
-                                square.Image = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Cross.png");
-                                circleTurn = true;
-                            }
-                            Console.WriteLine(flp.TabIndex + ", " + square.TabIndex + " " + square.Image);
-                            square.Enabled = false;
-                            square.PictureBox.Invalidate();
-                        }
-                    }
-                }
+                pbx.Image = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Circle.png");
+                circleTurn = false;
             }
+            else
+            {
+                pbx.Image = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Cross.png");
+                circleTurn = true;
+            }
+
+            pbx.Enabled = false;
         }
 
         int FlpPosX(int x, int y)
