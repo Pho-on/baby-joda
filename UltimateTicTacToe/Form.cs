@@ -139,7 +139,10 @@ namespace UltimateTicTacToe
                             small3x3.Enabled = false;
                         }
                     }
-                    break;
+                }
+                else
+                {
+                    small3x3.Enabled = false;
                 }
             }
         }
