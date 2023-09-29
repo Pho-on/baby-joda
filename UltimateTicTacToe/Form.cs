@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace UltimateTicTacToe
 {
@@ -51,21 +53,9 @@ namespace UltimateTicTacToe
         void PictureBoxClick(object sender, EventArgs e)
         {
             var pbx = (sender as Square);
-            int index = pbx.Index;
-            int parentIndex = pbx.ParentIndex;
 
-            if (circleTurn)
-            {
-                pbx.Image = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Circle.png");
-                circleTurn = false;
-            }
-            else
-            {
-                pbx.Image = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Cross.png");
-                circleTurn = true;
-            }
-
-            pbx.Enabled = false;
+            WichPicture(pbx);
+            Next3x3(pbx.Index);
         }
 
         int FlpPosX(int x, int y)
@@ -111,6 +101,46 @@ namespace UltimateTicTacToe
             else
             {
                 return false;
+            }
+        }
+
+        void WichPicture(Square pbx)
+        {
+            if (circleTurn)
+            {
+                pbx.Image = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Circle.png");
+                circleTurn = false;
+            }
+            else
+            {
+                pbx.Image = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Cross.png");
+                circleTurn = true;
+            }
+
+            pbx.IsUsed = true;
+            pbx.Enabled = false;
+        }
+
+        void Next3x3(int index)
+        {
+            foreach (Small3x3 small3x3 in this.Controls.OfType<Small3x3>())
+            {
+                if (small3x3.Index == index)
+                {
+                    foreach (Square square in small3x3)
+                    {
+                        if (square.IsUsed == false)
+                        {
+                            small3x3.Enabled = true;
+                            break;
+                        }
+                        else
+                        {
+                            small3x3.Enabled = false;
+                        }
+                    }
+                    break;
+                }
             }
         }
     }

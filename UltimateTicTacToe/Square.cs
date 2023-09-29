@@ -25,5 +25,7 @@ namespace UltimateTicTacToe
         public int Index { get; set; }
 
         public int ParentIndex { get; set; }
+
+        public bool IsUsed { get; set; }
     }
 }
