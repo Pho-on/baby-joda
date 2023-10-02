@@ -123,7 +123,7 @@ namespace UltimateTicTacToe
 
         void Next3x3(int index)
         {
-            bool isUsed = false;
+            bool is3x3Full = false;
 
             foreach (Square square in this.Controls.OfType<Square>())
             {
@@ -131,18 +131,18 @@ namespace UltimateTicTacToe
                 {
                     if (square.IsUsed == false)
                     {
-                        isUsed = false;
+                        is3x3Full = false;
                     }
                     else
                     {
-                        isUsed = true;
+                        is3x3Full = true;
                     }
                 }
             }
 
             foreach (Small3x3 small3x3 in this.Controls.OfType<Small3x3>())
             {
-                if (isUsed)
+                if (is3x3Full)
                 {
                     if (small3x3.Index == index)
                     {
