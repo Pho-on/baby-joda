@@ -123,28 +123,49 @@ namespace UltimateTicTacToe
 
         void Next3x3(int index)
         {
+            bool isUsed = false;
+
+            foreach (Square square in this.Controls.OfType<Square>())
+            {
+                if (square.ParentIndex == index)
+                {
+                    if (square.IsUsed == false)
+                    {
+                        isUsed = false;
+                    }
+                    else
+                    {
+                        isUsed = true;
+                    }
+                }
+            }
+
             foreach (Small3x3 small3x3 in this.Controls.OfType<Small3x3>())
             {
-                if (small3x3.Index == index)
+                if (isUsed)
                 {
-                    foreach (Square square in small3x3)
+                    if (small3x3.Index == index)
                     {
-                        if (square.IsUsed == false)
-                        {
-                            small3x3.Enabled = true;
-                            break;
-                        }
-                        else
-                        {
-                            small3x3.Enabled = false;
-                        }
+                        small3x3.Enabled = false;
+                    }
+                    else
+                    {
+                        small3x3.Enabled = true;
                     }
                 }
                 else
                 {
-                    small3x3.Enabled = false;
+                    if (small3x3.Index == index)
+                    {
+                        small3x3.Enabled = true;
+                    }
+                    else
+                    {
+                        small3x3.Enabled = false;
+                    }
                 }
             }
         }
     }
 }
+
