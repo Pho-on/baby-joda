@@ -166,18 +166,28 @@ namespace UltimateTicTacToe
 
                 if (is3x3Full) { finished3x3.Add(small3x3.Index); }
 
-                // kanske funkar...
+                // funkar shiiiiii
                 if (finished3x3.Contains(small3x3.Index))
                 {
-                    small3x3.Enabled = false;
-                }
-                else if (small3x3.Index == index && !finished3x3.Contains(index))
-                {
-                    small3x3.Enabled = true;
+                    if (small3x3.Index == index)
+                    {
+                        small3x3.Enabled = false;
+                    }
+                    else
+                    {
+                        small3x3.Enabled = true;
+                    }
                 }
                 else
                 {
-                    small3x3.Enabled = false;
+                    if (small3x3.Index == index)
+                    {
+                        small3x3.Enabled = true;
+                    }
+                    else
+                    {
+                        small3x3.Enabled = false;
+                    }
                 }
             }
         }
@@ -202,6 +212,7 @@ namespace UltimateTicTacToe
                 Image = image,
                 Width = 148,
                 Height = 148,
+                Enabled = false,
                 Margin = new Padding(1, 1, 1, 1),
                 SizeMode = PictureBoxSizeMode.StretchImage
             };
