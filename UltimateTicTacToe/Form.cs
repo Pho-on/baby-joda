@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace UltimateTicTacToe
 {
@@ -17,6 +18,8 @@ namespace UltimateTicTacToe
     {
         Square square;
         Small3x3 small3x3;
+
+        List<int> finished3x3 = new List<int>();
 
         bool circleTurn;
 
@@ -55,8 +58,8 @@ namespace UltimateTicTacToe
             var pbx = (sender as Square);
 
             WhosTurn(pbx);
+            IsWinSmall3x3(pbx.ParentIndex);
             Next3x3(pbx.Index);
-            IsWin(pbx.ParentIndex);
         }
 
         void WhosTurn(Square pbx)
@@ -78,54 +81,7 @@ namespace UltimateTicTacToe
             pbx.Enabled = false;
         }
 
-        void Next3x3(int index)
-        {
-            bool is3x3Full = false;
-
-            foreach (Small3x3 small3x3 in this.Controls.OfType<Small3x3>())
-            {
-                if (small3x3.Index == index)
-                {
-                    foreach (Square square in small3x3.Controls)
-                    {
-                        if (square.IsUsed == false)
-                        {
-                            is3x3Full = false;
-                            break;
-                        }
-                        else
-                        {
-                            is3x3Full = true;
-                        }
-                    }
-                }
-
-                if (is3x3Full)
-                {
-                    if (small3x3.Index == index)
-                    {
-                        small3x3.Enabled = false;
-                    }
-                    else
-                    {
-                        small3x3.Enabled = true;
-                    }
-                }
-                else
-                {
-                    if (small3x3.Index == index)
-                    {
-                        small3x3.Enabled = true;
-                    }
-                    else
-                    {
-                        small3x3.Enabled = false;
-                    }
-                }
-            }
-        }
-
-        void IsWin(int parenIndex)
+        void IsWinSmall3x3(int parenIndex)
         {
             bool circleWin = false;
             bool crossWin = false;
@@ -137,7 +93,7 @@ namespace UltimateTicTacToe
             {
                 if (small3x3.Index == parenIndex)
                 {
-                    foreach(Square square in small3x3.Controls)
+                    foreach (Square square in small3x3.Controls)
                     {
                         if (square.IsUsed)
                         {
@@ -149,7 +105,7 @@ namespace UltimateTicTacToe
                             {
                                 cross.Add(square.Index);
                             }
-                        } 
+                        }
                     }
                 }
             }
@@ -176,14 +132,87 @@ namespace UltimateTicTacToe
             if (cross.Contains(1) && cross.Contains(5) && cross.Contains(9)) { crossWin = true; }
             if (cross.Contains(3) && cross.Contains(5) && cross.Contains(7)) { crossWin = true; }
 
+            if (circleWin || crossWin)
+            {
+                finished3x3.Add(parenIndex);
+                WinSmall3x3(circleWin, crossWin, parenIndex);
+            }
+        }
+
+        void Next3x3(int index)
+        {
+            foreach (Small3x3 small3x3 in this.Controls.OfType<Small3x3>())
+            {
+                bool is3x3Full = false;
+
+                if (small3x3.Index == index)
+                {
+                    if (!finished3x3.Contains(index))
+                    {
+                        foreach (Square square in small3x3.Controls)
+                        {
+                            if (square.IsUsed == false)
+                            {
+                                is3x3Full = false;
+                                break;
+                            }
+                            else
+                            {
+                                is3x3Full = true;
+                            }
+                        }
+                    }
+                }
+
+                if (is3x3Full) { finished3x3.Add(small3x3.Index); }
+
+                // kanske funkar...
+                if (finished3x3.Contains(small3x3.Index))
+                {
+                    small3x3.Enabled = false;
+                }
+                else if (small3x3.Index == index && !finished3x3.Contains(index))
+                {
+                    small3x3.Enabled = true;
+                }
+                else
+                {
+                    small3x3.Enabled = false;
+                }
+            }
+        }
+
+        void WinSmall3x3(bool circleWin, bool crossWin, int index)
+        {
+            Bitmap image = null;
+
             if (circleWin)
             {
-                Console.WriteLine("CIRCLE WIN");
+                image = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Circle.png");
             }
 
             if (crossWin)
             {
-                Console.WriteLine("CROSS WIN");
+                image = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Cross.png");
+            }
+
+            PictureBox pbx = new PictureBox
+            {
+                BackColor = Color.White,
+                Image = image,
+                Width = 148,
+                Height = 148,
+                Margin = new Padding(1, 1, 1, 1),
+                SizeMode = PictureBoxSizeMode.StretchImage
+            };
+
+            foreach (Small3x3 small3x3 in this.Controls.OfType<Small3x3>())
+            {
+                if (small3x3.Index == index)
+                {
+                    small3x3.Controls.Clear();
+                    small3x3.Controls.Add(pbx);
+                }
             }
         }
 
