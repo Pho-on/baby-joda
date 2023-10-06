@@ -2,18 +2,12 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace UltimateTicTacToe
 {
-    /*
-     - Gör en klasser 
-        - en för varje liten ruta (81st)
-           - pbx, bool träff (är rutan använd), index för varje box i flp (1-9 per flp)
-        - en för varje 3x3 (är hela ifyld, isf vem vann), index för varje flp (1-9)
-        - en för hela planen (vilken är den nästa 3x3, vem van totalt)
-    */
-
+    
     public partial class Form : System.Windows.Forms.Form
     {
         Square square;
@@ -165,29 +159,41 @@ namespace UltimateTicTacToe
                 }
 
                 if (is3x3Full) { finished3x3.Add(small3x3.Index); }
+            }
 
-                // funkar shiiiiii
+            bool next3x3Finished = false;
+
+            foreach (Small3x3 small3x3 in this.Controls.OfType<Small3x3>().Skip(index - 1))
+            {
                 if (finished3x3.Contains(small3x3.Index))
                 {
-                    if (small3x3.Index == index)
-                    {
-                        small3x3.Enabled = false;
-                    }
-                    else
-                    {
-                        small3x3.Enabled = true;
-                    }
+                    small3x3.Enabled = false;
+                    next3x3Finished = true;
+                }
+
+                if (small3x3.Index == index && !next3x3Finished)
+                {
+                    small3x3.Enabled = true;
+                }
+                else if (!(small3x3.Index == index && next3x3Finished))
+                {
+                    small3x3.Enabled = false;
+                }
+                else if (small3x3.Index != index)
+                {
+                    small3x3.Enabled = true;
+                }
+            }
+
+            foreach (Small3x3 small3x3 in this.Controls.OfType<Small3x3>().Take(index - 1))
+            {
+                if (next3x3Finished)
+                {
+                    small3x3.Enabled = true;
                 }
                 else
                 {
-                    if (small3x3.Index == index)
-                    {
-                        small3x3.Enabled = true;
-                    }
-                    else
-                    {
-                        small3x3.Enabled = false;
-                    }
+                    small3x3.Enabled = false;
                 }
             }
         }
