@@ -160,7 +160,7 @@ namespace UltimateTicTacToe
 
                 if (is3x3Full) { finished3x3.Add(small3x3.Index); }
             }
-
+            /*  funkar inte...
             bool next3x3Finished = false;
 
             foreach (Small3x3 small3x3 in this.Controls.OfType<Small3x3>().Skip(index - 1))
@@ -179,7 +179,7 @@ namespace UltimateTicTacToe
                 {
                     small3x3.Enabled = false;
                 }
-                else if (small3x3.Index != index)
+                else if (small3x3.Index != index && next3x3Finished)
                 {
                     small3x3.Enabled = true;
                 }
@@ -195,7 +195,7 @@ namespace UltimateTicTacToe
                 {
                     small3x3.Enabled = false;
                 }
-            }
+            }*/
         }
 
         void WinSmall3x3(bool circleWin, bool crossWin, int index)
