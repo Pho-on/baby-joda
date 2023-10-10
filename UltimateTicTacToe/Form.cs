@@ -271,9 +271,13 @@ namespace UltimateTicTacToe
 
                 MakePlayingBoard();
                 circleTurn = WhoStarts();
-            }
 
+                finished3x3.Clear();
+                bigCircle.Clear();
+                bigCross.Clear();
+            }
         }
+
         bool WhoStarts()
         {
             Random random = new Random();
