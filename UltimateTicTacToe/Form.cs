@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace UltimateTicTacToe
 {
-    
+
     public partial class Form : System.Windows.Forms.Form
     {
         Square square;
         Small3x3 small3x3;
 
         List<int> finished3x3 = new List<int>();
+        List<int> bigCircle = new List<int>();
+        List<int> bigCross = new List<int>();
 
         bool circleTurn;
 
@@ -54,6 +56,7 @@ namespace UltimateTicTacToe
             WhosTurn(pbx);
             IsWinSmall3x3(pbx.ParentIndex);
             Next3x3(pbx.Index);
+            WinGame();
         }
 
         void WhosTurn(Square pbx)
@@ -158,44 +161,38 @@ namespace UltimateTicTacToe
                     }
                 }
 
-                if (is3x3Full) { finished3x3.Add(small3x3.Index); }
-            }
-            /*  funkar inte...
-            bool next3x3Finished = false;
-
-            foreach (Small3x3 small3x3 in this.Controls.OfType<Small3x3>().Skip(index - 1))
-            {
-                if (finished3x3.Contains(small3x3.Index))
+                if (is3x3Full)
                 {
-                    small3x3.Enabled = false;
-                    next3x3Finished = true;
+                    finished3x3.Add(small3x3.Index);
                 }
 
-                if (small3x3.Index == index && !next3x3Finished)
+                if (finished3x3.Contains(index))
                 {
-                    small3x3.Enabled = true;
-                }
-                else if (!(small3x3.Index == index && next3x3Finished))
-                {
-                    small3x3.Enabled = false;
-                }
-                else if (small3x3.Index != index && next3x3Finished)
-                {
-                    small3x3.Enabled = true;
-                }
-            }
-
-            foreach (Small3x3 small3x3 in this.Controls.OfType<Small3x3>().Take(index - 1))
-            {
-                if (next3x3Finished)
-                {
-                    small3x3.Enabled = true;
+                    if (small3x3.Index == index)
+                    {
+                        small3x3.Enabled = false;
+                    }
+                    else if (finished3x3.Contains(small3x3.Index))
+                    {
+                        small3x3.Enabled = false;
+                    }
+                    else
+                    {
+                        small3x3.Enabled = true;
+                    }
                 }
                 else
                 {
-                    small3x3.Enabled = false;
+                    if (small3x3.Index == index)
+                    {
+                        small3x3.Enabled = true;
+                    }
+                    else
+                    {
+                        small3x3.Enabled = false;
+                    }
                 }
-            }*/
+            }
         }
 
         void WinSmall3x3(bool circleWin, bool crossWin, int index)
@@ -205,11 +202,13 @@ namespace UltimateTicTacToe
             if (circleWin)
             {
                 image = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Circle.png");
+                bigCircle.Add(index);
             }
 
             if (crossWin)
             {
                 image = new Bitmap(@"C:\Repos\baby-joda\UltimateTicTacToe\Images\Cross.png");
+                bigCross.Add(index);
             }
 
             PictureBox pbx = new PictureBox
@@ -233,6 +232,48 @@ namespace UltimateTicTacToe
             }
         }
 
+        void WinGame()
+        {
+            bool win = false;
+
+            if (bigCircle.Count() >= 3 || bigCross.Count() <= 3)
+            {
+                if (bigCircle.Contains(1) && bigCircle.Contains(2) && bigCircle.Contains(3)) { win = true; }
+                if (bigCircle.Contains(4) && bigCircle.Contains(4) && bigCircle.Contains(6)) { win = true; }
+                if (bigCircle.Contains(7) && bigCircle.Contains(8) && bigCircle.Contains(9)) { win = true; }
+
+                if (bigCircle.Contains(1) && bigCircle.Contains(4) && bigCircle.Contains(7)) { win = true; }
+                if (bigCircle.Contains(2) && bigCircle.Contains(5) && bigCircle.Contains(8)) { win = true; }
+                if (bigCircle.Contains(3) && bigCircle.Contains(6) && bigCircle.Contains(9)) { win = true; }
+
+                if (bigCircle.Contains(1) && bigCircle.Contains(5) && bigCircle.Contains(9)) { win = true; }
+                if (bigCircle.Contains(3) && bigCircle.Contains(5) && bigCircle.Contains(7)) { win = true; }
+
+                if (bigCross.Contains(1) && bigCross.Contains(2) && bigCross.Contains(3)) { win = true; }
+                if (bigCross.Contains(4) && bigCross.Contains(4) && bigCross.Contains(6)) { win = true; }
+                if (bigCross.Contains(7) && bigCross.Contains(8) && bigCross.Contains(9)) { win = true; }
+
+                if (bigCross.Contains(1) && bigCross.Contains(4) && bigCross.Contains(7)) { win = true; }
+                if (bigCross.Contains(2) && bigCross.Contains(5) && bigCross.Contains(8)) { win = true; }
+                if (bigCross.Contains(3) && bigCross.Contains(6) && bigCross.Contains(9)) { win = true; }
+
+                if (bigCross.Contains(1) && bigCross.Contains(5) && bigCross.Contains(9)) { win = true; }
+                if (bigCross.Contains(3) && bigCross.Contains(5) && bigCross.Contains(7)) { win = true; }
+            }
+
+            if (win)
+            {
+                Thread.Sleep(5000);
+
+                this.Controls.Clear();
+
+                InitializeComponent();
+
+                MakePlayingBoard();
+                circleTurn = WhoStarts();
+            }
+
+        }
         bool WhoStarts()
         {
             Random random = new Random();
