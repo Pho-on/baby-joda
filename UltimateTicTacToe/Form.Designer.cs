@@ -36,7 +36,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(464, 464);
+            this.ClientSize = new System.Drawing.Size(471, 471);
             this.Name = "Form";
             this.Text = "UltimateTicTacToe";
             this.ResumeLayout(false);

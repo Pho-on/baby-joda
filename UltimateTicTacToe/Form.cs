@@ -56,6 +56,7 @@ namespace UltimateTicTacToe
             WhosTurn(pbx);
             IsWinSmall3x3(pbx.ParentIndex);
             Next3x3(pbx.Index);
+            ShowPlayable3x3();
             WinGame();
         }
 
@@ -195,6 +196,22 @@ namespace UltimateTicTacToe
             }
         }
 
+        void ShowPlayable3x3()
+        {
+            foreach (Small3x3 small3x3 in this.Controls.OfType<Small3x3>())
+            {
+                if (small3x3.Enabled)
+                {
+                    small3x3.Border = Color.Yellow;
+                }
+                else
+                {
+                    small3x3.Border = Color.DimGray;
+                }
+                small3x3.Invalidate();
+            }
+        }
+
         void WinSmall3x3(bool circleWin, bool crossWin, int index)
         {
             Bitmap image = null;
@@ -266,15 +283,14 @@ namespace UltimateTicTacToe
                 Thread.Sleep(5000);
 
                 this.Controls.Clear();
+                finished3x3.Clear();
+                bigCircle.Clear();
+                bigCross.Clear();
 
                 InitializeComponent();
 
                 MakePlayingBoard();
                 circleTurn = WhoStarts();
-
-                finished3x3.Clear();
-                bigCircle.Clear();
-                bigCross.Clear();
             }
         }
 
@@ -299,11 +315,11 @@ namespace UltimateTicTacToe
 
             if ((x == 0 && y == 0) || (x == 0 && y == 1) || (x == 0 && y == 2))
             {
-                xPos = (x * size) + (5 * (x + 1));
+                xPos = (x * size) + (6 * (x + 1));
             }
             else
             {
-                xPos = (x * size) + (2 * (x + 1) + 3);
+                xPos = (x * size) + (5 * (x + 1) + 1);
             }
             return xPos;
         }
@@ -315,11 +331,11 @@ namespace UltimateTicTacToe
 
             if ((x == 0 && y == 0) || (x == 1 && y == 0) || (x == 2 && y == 0))
             {
-                yPos = (y * size) + (5 * (y + 1));
+                yPos = (y * size) + (6 * (y + 1));
             }
             else
             {
-                yPos = (y * size) + (2 * (y + 1) + 3);
+                yPos = (y * size) + (5 * (y + 1) + 1);
             }
             return yPos;
         }
