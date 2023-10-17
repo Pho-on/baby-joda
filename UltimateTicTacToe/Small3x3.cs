@@ -7,12 +7,14 @@ namespace UltimateTicTacToe
     internal class Small3x3 : FlowLayoutPanel
     {
         private int size = 150;
-        private Color color = Color.DimGray;
+        private int x;
+        private int y;
 
         public Small3x3(int x, int y, int index)
         {
             this.Index = index;
-            this.Border = color;
+            this.x = x;
+            this.y = y;
 
             Width = size;
             Height = size;
@@ -24,14 +26,14 @@ namespace UltimateTicTacToe
 
         public int Index { get; set; }
 
-        public Color Border { get; set; }
+        public Color BorderColor { get; set; }
 
-        protected override void OnPaint(PaintEventArgs e)
+        public void DrawBorder(Graphics g)
         {
-            Pen boarderColor = new Pen(color, 3);
-            Rectangle boarder = new Rectangle(0, 0, size - 1, size - 1);
+            Pen borderColor = new Pen(BorderColor, 3);
+            Rectangle border = new Rectangle(x, y, size - 1, size - 1);
 
-            e.Graphics.DrawRectangle(boarderColor, boarder);
+            g.DrawRectangle(borderColor, border);
         }
     }
 }

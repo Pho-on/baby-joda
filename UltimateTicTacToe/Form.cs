@@ -49,6 +49,14 @@ namespace UltimateTicTacToe
             }
         }
 
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            foreach (Small3x3 small3x3 in this.Controls.OfType<Small3x3>())
+            {
+                small3x3.DrawBorder(e.Graphics);
+            }
+        }
+
         void PictureBoxClick(object sender, EventArgs e)
         {
             var pbx = (sender as Square);
@@ -202,13 +210,13 @@ namespace UltimateTicTacToe
             {
                 if (small3x3.Enabled)
                 {
-                    small3x3.Border = Color.Yellow;
+                    small3x3.BorderColor = Color.Yellow;
                 }
                 else
                 {
-                    small3x3.Border = Color.DimGray;
+                    small3x3.BorderColor = Color.Black;
                 }
-                small3x3.Invalidate();
+                Invalidate();
             }
         }
 
