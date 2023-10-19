@@ -91,8 +91,25 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Images\" />
+    <Content Include="Images\Block-Empty.png" />
+    <Content Include="Images\Block-I.png" />
+    <Content Include="Images\Block-J.png" />
+    <Content Include="Images\Block-L.png" />
+    <Content Include="Images\Block-O.png" />
+    <Content Include="Images\Block-S.png" />
+    <Content Include="Images\Block-T.png" />
+    <Content Include="Images\Block-Z.png" />
+    <Content Include="Images\Icon.ico" />
+    <Content Include="Images\TileBlue.png" />
+    <Content Include="Images\TileCyan.png" />
+    <Content Include="Images\TileEmpty.png" />
+    <Content Include="Images\TileGreen.png" />
+    <Content Include="Images\TileOrange.png" />
+    <Content Include="Images\TilePurple.png" />
+    <Content Include="Images\TileRed.png" />
+    <Content Include="Images\TileYellow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

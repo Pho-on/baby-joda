@@ -1,4 +1,6 @@
-﻿namespace Tetris
+﻿using System.Text.RegularExpressions;
+
+namespace Tetris
 {
 
     class GameState
@@ -43,7 +45,7 @@
 
         private bool BlockFits()
         {
-            foreach (Position pos in CurrentBlock.TilePosition())
+            foreach (Position pos in CurrentBlock.TilePositions())
             {
                 if (!GameGrid.IsEmpty(pos.Row, pos.Column))
                 {
@@ -91,7 +93,7 @@
 
         private void PlaceBlock()
         {
-            foreach (Position pos in CurrentBlock.TilePosition())
+            foreach (Position pos in CurrentBlock.TilePositions())
             {
                 GameGrid[pos.Row, pos.Column] = CurrentBlock.Id;
             }
@@ -117,6 +119,36 @@
                 CurrentBlock.Move(-1, 0);
                 PlaceBlock();
             }
+        }
+
+        private int TileDropDistance(Position pos)
+        {
+            int drop = 0;
+
+            while (GameGrid.IsEmpty(pos.Row + drop + 1, pos.Column))
+            {
+                drop++;
+            }
+
+            return drop;
+        }
+
+        public int BlockDropDistance()
+        {
+            int drop = GameGrid.Rows;
+
+            foreach (Position pos in CurrentBlock.TilePositions())
+            {
+                drop = System.Math.Min(drop, TileDropDistance(pos));
+            }
+
+            return drop;
+        }
+
+        public void DropBlock()
+        {
+            CurrentBlock.Move(BlockDropDistance(), 0);
+            PlaceBlock();
         }
     }
 }

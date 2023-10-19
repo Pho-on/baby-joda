@@ -20,7 +20,7 @@ namespace Tetris
             offset = new Position(StartOffset.Row, StartOffset.Column);
         }
 
-        public IEnumerable<Position> TilePosition()
+        public IEnumerable<Position> TilePositions()
         {
             foreach (Position pos in Tiles[rotationState]) 
             { 

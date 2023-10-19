@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -8,7 +10,7 @@ namespace Tetris
     public partial class Form : System.Windows.Forms.Form
     {
 
-        readonly Bitmap[] tileImages = new Bitmap[]
+        static readonly Bitmap[] tileImages = new Bitmap[]
         {
             new Bitmap(@"C:\Repos\baby-joda\Tetris\Images\TileEmpty.png"),
             new Bitmap(@"C:\Repos\baby-joda\Tetris\Images\TileCyan.png"),
@@ -19,6 +21,39 @@ namespace Tetris
             new Bitmap(@"C:\Repos\baby-joda\Tetris\Images\TilePurple.png"),
             new Bitmap(@"C:\Repos\baby-joda\Tetris\Images\TileRed.png")
         };
+
+        static Bitmap SetOpacityImage(Bitmap image)
+        {
+            Bitmap originalImage = new Bitmap(image);
+            Bitmap opacityImage = new Bitmap(image.Width, image.Height);
+
+            int alpha = 50;
+
+            for (int x = 0; x < image.Width; x++)
+            {
+                for (int y = 0; y < image.Height; y++)
+                {
+                    Color original = originalImage.GetPixel(x, y);
+                    Color opacity = Color.FromArgb(alpha, original.R, original.G, original.B);
+                    opacityImage.SetPixel(x, y, opacity);
+                }
+            }
+
+            return opacityImage;
+        }
+
+        readonly Bitmap[] tileOpacityImages = new Bitmap[]
+        {
+            new Bitmap(SetOpacityImage(tileImages[0])),
+            new Bitmap(SetOpacityImage(tileImages[1])),
+            new Bitmap(SetOpacityImage(tileImages[2])),
+            new Bitmap(SetOpacityImage(tileImages[3])),
+            new Bitmap(SetOpacityImage(tileImages[4])),
+            new Bitmap(SetOpacityImage(tileImages[5])),
+            new Bitmap(SetOpacityImage(tileImages[6])),
+            new Bitmap(SetOpacityImage(tileImages[7]))
+        };
+
 
         readonly Bitmap[] blockImages = new Bitmap[]
         {
@@ -35,6 +70,10 @@ namespace Tetris
         PictureBox[,] pictureBoxGrid;
 
         GameState gameState= new GameState();
+
+        int maxDelay = 1000;
+        int minDelay = 75;
+        int delayDecrease = 25;
 
         public Form()
         {
@@ -84,7 +123,7 @@ namespace Tetris
 
         void DrawBlock(Block block)
         {
-            foreach (Position pos in block.TilePosition())
+            foreach (Position pos in block.TilePositions())
             {
                 pictureBoxGrid[pos.Row, pos.Column].Image = tileImages[block.Id];
             }
@@ -96,9 +135,20 @@ namespace Tetris
             pictureBox1.Image = blockImages[next.Id];
         }
 
+        void DrawGhostBlock(Block block)
+        {
+            int dropDistance = gameState.BlockDropDistance();
+
+            foreach (Position pos in block.TilePositions())
+            {
+                pictureBoxGrid[pos.Row + dropDistance, pos.Column].Image = tileOpacityImages[block.Id];
+            }
+        }
+
         void Draw(GameState gameState) 
         {
             DrawGrid(gameState.GameGrid);
+            DrawGhostBlock(gameState.CurrentBlock);
             DrawBlock(gameState.CurrentBlock);
             DrawNextBlock(gameState.BlockQueue);
             lblScore.Text = (gameState.Score).ToString();
@@ -110,7 +160,8 @@ namespace Tetris
 
             while (!gameState.GameOver)
             {
-                await Task.Delay(500);
+                int delay = Math.Max(minDelay, maxDelay - (gameState.Score * delayDecrease));
+                await Task.Delay(delay);
                 gameState.MoveBlockDown();
                 Draw(gameState);
             }
@@ -136,6 +187,9 @@ namespace Tetris
                     break;
                 case Keys.R:
                     gameState.RotateBlock();
+                    break;
+                case Keys.Space:
+                    gameState.DropBlock();
                     break;
                 default:
                     return;
