@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Block.cs" />
+    <Compile Include="BlockQueue.cs" />
     <Compile Include="Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -54,6 +55,7 @@
       <DependentUpon>Form.cs</DependentUpon>
     </Compile>
     <Compile Include="GameGrid.cs" />
+    <Compile Include="GameState.cs" />
     <Compile Include="IBlock.cs" />
     <Compile Include="JBlock.cs" />
     <Compile Include="LBlock.cs" />

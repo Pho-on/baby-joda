@@ -14,9 +14,25 @@ namespace Tetris
     public partial class Form : System.Windows.Forms.Form
     {
 
+        readonly Bitmap[] tileImages = new Bitmap[]
+        {
+            new Bitmap(@"C:\Repos\baby-joda\Tetris\Images\TileEmpty.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Tetris\Images\TileCyan.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Tetris\Images\TileBlue.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Tetris\Images\TileOrange.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Tetris\Images\TileYellow.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Tetris\Images\TileGreen.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Tetris\Images\TilePurple.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Tetris\Images\TileRed.png")
+        };
+
+        PictureBox[,] pictureBoxGrid = new PictureBox[10, 22];
+
         public Form()
         {
             InitializeComponent();
+
+            MakePictureBoxGrid();
 
             /*
              Finding layout...
@@ -24,22 +40,22 @@ namespace Tetris
                 - side & bottom marign 27
                 - pbx size 30
             */
+        }
 
-            for (int i = 0; i < 10; i++)
+        void MakePictureBoxGrid()
+        {
+            for (int r = 0; r < 10; r++)
             {
-                for (int j = 0; j < 22; j++)
+                for (int c = 0; c < 22; c++)
                 {
                     PictureBox pbx = new PictureBox
                     {
-                        Image = new Bitmap(@"C:\Repos\baby-joda\Tetris\Images\TileEmpty.png"),
                         SizeMode = PictureBoxSizeMode.StretchImage,
-                        BackColor = Color.Black,
                         Width = 30,
                         Height = 30,
                     };
 
-                    pbx.Location = new Point((30 * i) + 27, (30 * j));
-                    this.Controls.Add(pbx);
+                    pictureBoxGrid[r, c] = pbx;
                 }
             }
         }
