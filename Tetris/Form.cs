@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,26 +21,6 @@ namespace Tetris
             new Bitmap(@"C:\Repos\baby-joda\Tetris\Images\TilePurple.png"),
             new Bitmap(@"C:\Repos\baby-joda\Tetris\Images\TileRed.png")
         };
-
-        static Bitmap SetOpacityImage(Bitmap image)
-        {
-            Bitmap originalImage = new Bitmap(image);
-            Bitmap opacityImage = new Bitmap(image.Width, image.Height);
-
-            int alpha = 50;
-
-            for (int x = 0; x < image.Width; x++)
-            {
-                for (int y = 0; y < image.Height; y++)
-                {
-                    Color original = originalImage.GetPixel(x, y);
-                    Color opacity = Color.FromArgb(alpha, original.R, original.G, original.B);
-                    opacityImage.SetPixel(x, y, opacity);
-                }
-            }
-
-            return opacityImage;
-        }
 
         readonly Bitmap[] tileOpacityImages = new Bitmap[]
         {
@@ -68,7 +49,7 @@ namespace Tetris
 
         PictureBox[,] pictureBoxGrid;
 
-        GameState gameState= new GameState();
+        GameState gameState = new GameState();
 
         int maxDelay = 1000;
         int minDelay = 75;
@@ -78,8 +59,9 @@ namespace Tetris
         {
             InitializeComponent();
             pictureBoxGrid = SetupPictureBoxGrid(gameState.GameGrid);
-            Draw(gameState);
-            GameLoop();
+
+            lblGameOverScore.Click += PlayAgain_Click;
+            pbxPlayAgain.Click += PlayAgain_Click;
         }
 
         PictureBox[,] SetupPictureBoxGrid(GameGrid grid)
@@ -108,6 +90,26 @@ namespace Tetris
             return pictureBoxGrid;
         }
 
+        static Bitmap SetOpacityImage(Bitmap image)
+        {
+            Bitmap originalImage = new Bitmap(image);
+            Bitmap opacityImage = new Bitmap(image.Width, image.Height);
+
+            int alpha = 50;
+
+            for (int x = 0; x < image.Width; x++)
+            {
+                for (int y = 0; y < image.Height; y++)
+                {
+                    Color original = originalImage.GetPixel(x, y);
+                    Color opacity = Color.FromArgb(alpha, original.R, original.G, original.B);
+                    opacityImage.SetPixel(x, y, opacity);
+                }
+            }
+
+            return opacityImage;
+        }
+
         void DrawGrid(GameGrid grid)
         {
             for (int r = 0; r < grid.Rows; r++)
@@ -131,7 +133,7 @@ namespace Tetris
         void DrawNextBlock(BlockQueue blockQueue)
         {
             Block next = blockQueue.NextBlock;
-            pictureBox1.Image = blockImages[next.Id];
+            pbxNextBlock.Image = blockImages[next.Id];
         }
 
         void DrawGhostBlock(Block block)
@@ -144,13 +146,15 @@ namespace Tetris
             }
         }
 
-        void Draw(GameState gameState) 
+        void Draw(GameState gameState)
         {
             DrawGrid(gameState.GameGrid);
             DrawGhostBlock(gameState.CurrentBlock);
             DrawBlock(gameState.CurrentBlock);
             DrawNextBlock(gameState.BlockQueue);
             lblScore.Text = (gameState.Score).ToString();
+            lblGameOverScore.Text = $"Score: {gameState.Score}";
+
         }
 
         async Task GameLoop()
@@ -164,6 +168,8 @@ namespace Tetris
                 gameState.MoveBlockDown();
                 Draw(gameState);
             }
+
+            pnlGameOver.Visible = true;
         }
 
         private void Form_KeyDown(object sender, KeyEventArgs e)
@@ -176,10 +182,10 @@ namespace Tetris
             switch (e.KeyCode)
             {
                 case Keys.A:
-                    gameState.MoveBlockLeft(); 
+                    gameState.MoveBlockLeft();
                     break;
                 case Keys.D:
-                    gameState.MoveBlockRight(); 
+                    gameState.MoveBlockRight();
                     break;
                 case Keys.S:
                     gameState.MoveBlockDown();
@@ -195,6 +201,18 @@ namespace Tetris
             }
 
             Draw(gameState);
+        }
+
+        private async void Form_Load(object sender, EventArgs e)
+        {
+            await GameLoop();
+        }
+
+        async void PlayAgain_Click(object sender, EventArgs e)
+        {
+            gameState = new GameState();
+            pnlGameOver.Visible = false;
+            await GameLoop();
         }
     }
 }
