@@ -168,7 +168,7 @@ namespace Tetris
             }
 
             lblGameOverScore.Text = $"Score: {gameState.Score}";
-            lblHighScore.Text = gameState.HighScoreText();
+            lblHighScore.Text = gameState.HighScoreText;
             pnlGameOver.Visible = true;
         }
 
@@ -205,12 +205,15 @@ namespace Tetris
 
         private async void Form_Load(object sender, EventArgs e)
         {
+            gameState.HighScore = -1;
             await GameLoop();
         }
 
         async void PlayAgain_Click(object sender, EventArgs e)
         {
+            int highScore = gameState.HighScore;
             gameState = new GameState();
+            gameState.HighScore = highScore;
             pnlGameOver.Visible = false;
             await GameLoop();
         }

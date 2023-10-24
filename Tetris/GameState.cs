@@ -36,10 +36,9 @@ namespace Tetris
 
         public int Score { get; private set; }
 
-        public int HighScore { get; private set; }
+        public int HighScore { get; set; }
 
-        private int previusHighScore;
-        
+        public string HighScoreText { get; private set; }
 
         public GameState()
         {
@@ -108,7 +107,7 @@ namespace Tetris
             if (IsGameOver())
             {
                 GameOver = true;
-                SetHighScore(); // funkar inte
+                SetHighScore();
             }
             else
             {
@@ -118,25 +117,14 @@ namespace Tetris
 
         private void SetHighScore()
         {
-            if (Score > HighScore)
+            if (Score > HighScore || HighScore == -1)
             {
+                HighScoreText = $"New High Score: {Score}";
                 HighScore = Score;
             }
             else
             {
-                previusHighScore = HighScore;
-            }
-        }
-
-        public string HighScoreText()
-        {
-            if (previusHighScore <= HighScore)
-            {
-                return $"New High Score: {HighScore}";
-            }
-            else
-            {
-                return $"High Score: {previusHighScore}";
+                HighScoreText = $"High Score: {HighScore}";
             }
         }
 
