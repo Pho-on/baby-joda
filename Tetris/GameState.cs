@@ -28,13 +28,18 @@ namespace Tetris
             }
         }
 
-        public GameGrid GameGrid { get;  }
+        public GameGrid GameGrid { get; }
 
         public BlockQueue BlockQueue { get; }
 
         public bool GameOver { get; private set; }
 
         public int Score { get; private set; }
+
+        public int HighScore { get; private set; }
+
+        private int previusHighScore;
+        
 
         public GameState()
         {
@@ -103,10 +108,35 @@ namespace Tetris
             if (IsGameOver())
             {
                 GameOver = true;
+                SetHighScore(); // funkar inte
             }
             else
             {
                 CurrentBlock = BlockQueue.GetAndUpdate();
+            }
+        }
+
+        private void SetHighScore()
+        {
+            if (Score > HighScore)
+            {
+                HighScore = Score;
+            }
+            else
+            {
+                previusHighScore = HighScore;
+            }
+        }
+
+        public string HighScoreText()
+        {
+            if (previusHighScore <= HighScore)
+            {
+                return $"New High Score: {HighScore}";
+            }
+            else
+            {
+                return $"High Score: {previusHighScore}";
             }
         }
 

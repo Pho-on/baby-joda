@@ -60,7 +60,7 @@ namespace Tetris
             InitializeComponent();
             pictureBoxGrid = SetupPictureBoxGrid(gameState.GameGrid);
 
-            lblGameOverScore.Click += PlayAgain_Click;
+            lblPlayAgain.Click += PlayAgain_Click;
             pbxPlayAgain.Click += PlayAgain_Click;
         }
 
@@ -153,8 +153,6 @@ namespace Tetris
             DrawBlock(gameState.CurrentBlock);
             DrawNextBlock(gameState.BlockQueue);
             lblScore.Text = (gameState.Score).ToString();
-            lblGameOverScore.Text = $"Score: {gameState.Score}";
-
         }
 
         async Task GameLoop()
@@ -169,6 +167,8 @@ namespace Tetris
                 Draw(gameState);
             }
 
+            lblGameOverScore.Text = $"Score: {gameState.Score}";
+            lblHighScore.Text = gameState.HighScoreText();
             pnlGameOver.Visible = true;
         }
 

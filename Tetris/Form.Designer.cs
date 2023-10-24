@@ -36,9 +36,10 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.lblScore = new System.Windows.Forms.Label();
             this.pnlGameOver = new System.Windows.Forms.Panel();
+            this.lblGameOverScore = new System.Windows.Forms.Label();
+            this.lblHighScore = new System.Windows.Forms.Label();
             this.lblPlayAgain = new System.Windows.Forms.Label();
             this.pbxPlayAgain = new System.Windows.Forms.PictureBox();
-            this.lblGameOverScore = new System.Windows.Forms.Label();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbxNextBlock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -127,15 +128,46 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlGameOver.BackColor = System.Drawing.Color.Transparent;
+            this.pnlGameOver.Controls.Add(this.lblGameOverScore);
+            this.pnlGameOver.Controls.Add(this.lblHighScore);
             this.pnlGameOver.Controls.Add(this.lblPlayAgain);
             this.pnlGameOver.Controls.Add(this.pbxPlayAgain);
-            this.pnlGameOver.Controls.Add(this.lblGameOverScore);
             this.pnlGameOver.Controls.Add(this.pictureBox4);
             this.pnlGameOver.Location = new System.Drawing.Point(0, 0);
             this.pnlGameOver.Name = "pnlGameOver";
             this.pnlGameOver.Size = new System.Drawing.Size(565, 659);
             this.pnlGameOver.TabIndex = 6;
             this.pnlGameOver.Visible = false;
+            // 
+            // lblGameOverScore
+            // 
+            this.lblGameOverScore.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblGameOverScore.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
+            this.lblGameOverScore.Font = new System.Drawing.Font("Segoe WP Semibold", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGameOverScore.ForeColor = System.Drawing.Color.White;
+            this.lblGameOverScore.Location = new System.Drawing.Point(149, 246);
+            this.lblGameOverScore.Name = "lblGameOverScore";
+            this.lblGameOverScore.Size = new System.Drawing.Size(267, 38);
+            this.lblGameOverScore.TabIndex = 11;
+            this.lblGameOverScore.Text = "Score: 0";
+            this.lblGameOverScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblHighScore
+            // 
+            this.lblHighScore.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblHighScore.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
+            this.lblHighScore.Font = new System.Drawing.Font("Segoe WP Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblHighScore.ForeColor = System.Drawing.Color.White;
+            this.lblHighScore.Location = new System.Drawing.Point(149, 286);
+            this.lblHighScore.Name = "lblHighScore";
+            this.lblHighScore.Size = new System.Drawing.Size(267, 27);
+            this.lblHighScore.TabIndex = 14;
+            this.lblHighScore.Text = "New High Score: ";
+            this.lblHighScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblPlayAgain
             // 
@@ -163,21 +195,6 @@
             this.pbxPlayAgain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbxPlayAgain.TabIndex = 12;
             this.pbxPlayAgain.TabStop = false;
-            // 
-            // lblGameOverScore
-            // 
-            this.lblGameOverScore.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblGameOverScore.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
-            this.lblGameOverScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGameOverScore.ForeColor = System.Drawing.Color.White;
-            this.lblGameOverScore.Location = new System.Drawing.Point(149, 253);
-            this.lblGameOverScore.Name = "lblGameOverScore";
-            this.lblGameOverScore.Size = new System.Drawing.Size(267, 59);
-            this.lblGameOverScore.TabIndex = 11;
-            this.lblGameOverScore.Text = "Score: 0";
-            this.lblGameOverScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pictureBox4
             // 
@@ -229,6 +246,7 @@
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.Label lblPlayAgain;
         private System.Windows.Forms.PictureBox pbxPlayAgain;
+        private System.Windows.Forms.Label lblHighScore;
     }
 }
 
