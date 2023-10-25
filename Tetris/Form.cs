@@ -33,7 +33,6 @@ namespace Tetris
             new Bitmap(SetOpacityImage(tileImages[7]))
         };
 
-
         readonly Bitmap[] blockImages = new Bitmap[]
         {
             new Bitmap(@"C:\Repos\baby-joda\Tetris\Images\Block-Empty.png"),
@@ -63,6 +62,26 @@ namespace Tetris
             pbxPlayAgain.Click += PlayAgain_Click;
         }
 
+        static Bitmap SetOpacityImage(Bitmap image)
+        {
+            Bitmap originalImage = new Bitmap(image);
+            Bitmap opacityImage = new Bitmap(image.Width, image.Height);
+
+            int alpha = 50;
+
+            for (int x = 0; x < image.Width; x++)
+            {
+                for (int y = 0; y < image.Height; y++)
+                {
+                    Color original = originalImage.GetPixel(x, y);
+                    Color opacity = Color.FromArgb(alpha, original.R, original.G, original.B);
+                    opacityImage.SetPixel(x, y, opacity);
+                }
+            }
+
+            return opacityImage;
+        }
+
         PictureBox[,] SetupPictureBoxGrid(GameGrid grid)
         {
             PictureBox[,] pictureBoxGrid = new PictureBox[grid.Rows, grid.Columns];
@@ -87,26 +106,6 @@ namespace Tetris
             }
 
             return pictureBoxGrid;
-        }
-
-        static Bitmap SetOpacityImage(Bitmap image)
-        {
-            Bitmap originalImage = new Bitmap(image);
-            Bitmap opacityImage = new Bitmap(image.Width, image.Height);
-
-            int alpha = 50;
-
-            for (int x = 0; x < image.Width; x++)
-            {
-                for (int y = 0; y < image.Height; y++)
-                {
-                    Color original = originalImage.GetPixel(x, y);
-                    Color opacity = Color.FromArgb(alpha, original.R, original.G, original.B);
-                    opacityImage.SetPixel(x, y, opacity);
-                }
-            }
-
-            return opacityImage;
         }
 
         void DrawGrid(GameGrid grid)
