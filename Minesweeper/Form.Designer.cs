@@ -46,6 +46,7 @@
             this.cbxDifficulty.Name = "cbxDifficulty";
             this.cbxDifficulty.Size = new System.Drawing.Size(121, 21);
             this.cbxDifficulty.TabIndex = 0;
+            this.cbxDifficulty.SelectedIndexChanged += new System.EventHandler(this.cbxDifficulty_SelectedIndexChanged);
             // 
             // topDiv
             // 
@@ -54,7 +55,7 @@
             this.topDiv.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.topDiv.Location = new System.Drawing.Point(0, 0);
             this.topDiv.Name = "topDiv";
-            this.topDiv.Size = new System.Drawing.Size(613, 10);
+            this.topDiv.Size = new System.Drawing.Size(613, 45);
             this.topDiv.TabIndex = 1;
             // 
             // Form

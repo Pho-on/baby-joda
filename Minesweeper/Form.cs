@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Minesweeper
@@ -8,15 +9,34 @@ namespace Minesweeper
     public partial class Form : System.Windows.Forms.Form
     {
 
-        PictureBox[,] pixtureBoxGrid;
+        readonly Bitmap[] tileImages = new Bitmap[]
+        {
+            new Bitmap(@"C:\Repos\baby-joda\Minesweeper\Images\TileUnknown.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Minesweeper\Images\Tile1.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Minesweeper\Images\Tile2.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Minesweeper\Images\Tile3.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Minesweeper\Images\Tile4.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Minesweeper\Images\Tile5.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Minesweeper\Images\Tile6.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Minesweeper\Images\Tile7.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Minesweeper\Images\Tile8.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Minesweeper\Images\TileMine.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Minesweeper\Images\TileExploded.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Minesweeper\Images\TileEmpty.png"),
+            new Bitmap(@"C:\Repos\baby-joda\Minesweeper\Images\TileFlag.png"),
+        };
 
-        GameState gameState = new GameState();
+        PictureBox[,] pictureBoxGrid;
+
+        GameState gameState = new GameState("Normal");
 
         public Form()
         {
             InitializeComponent();
-            pixtureBoxGrid = SetupPictureBoxGrid(gameState.GameGrid);
 
+            pictureBoxGrid = SetupPictureBoxGrid(gameState.GameGrid);
+
+            cbxDifficulty.Text = "Normal";
             topDiv.SendToBack();
         }
 
@@ -47,9 +67,37 @@ namespace Minesweeper
             return pictureBoxGrid;
         }
 
+        void DrawGrid(GameGrid grid)
+        {
+            for (int r = 0; r < grid.Rows; r++)
+            {
+                for (int c = 0; c < grid.Columns; c++)
+                {
+                    int id = grid[r, c];
+                    pictureBoxGrid[r, c].Image = tileImages[id];
+                }
+            }
+        }
+
         void PictureBox_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void cbxDifficulty_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            foreach (PictureBox pbx in pictureBoxGrid)
+            {
+                Controls.Remove(pbx);
+            }
+
+            gameState = new GameState(cbxDifficulty.Text);
+
+            this.Width = gameState.GameGrid.Columns * 30 + 14;
+            this.Height = gameState.GameGrid.Rows * 30 + 45 + 39;
+
+            pictureBoxGrid = SetupPictureBoxGrid(gameState.GameGrid);
+            DrawGrid(gameState.GameGrid);
         }
     }
 }

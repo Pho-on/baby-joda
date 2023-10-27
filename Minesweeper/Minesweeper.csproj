@@ -81,8 +81,22 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Images\" />
+    <Content Include="Images\Logo.ico" />
+    <Content Include="Images\Tile1.png" />
+    <Content Include="Images\Tile2.png" />
+    <Content Include="Images\Tile3.png" />
+    <Content Include="Images\Tile4.png" />
+    <Content Include="Images\Tile5.png" />
+    <Content Include="Images\Tile6.png" />
+    <Content Include="Images\Tile7.png" />
+    <Content Include="Images\Tile8.png" />
+    <Content Include="Images\TileEmpty.png" />
+    <Content Include="Images\TileExploded.png" />
+    <Content Include="Images\TileFlag.png" />
+    <Content Include="Images\TileMine.png" />
+    <Content Include="Images\TileUnknown.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

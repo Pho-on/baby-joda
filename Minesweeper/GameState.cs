@@ -5,21 +5,21 @@
     {
         public string Difficulty { get ; set; }
 
-        public GameGrid GameGrid { get; }
+        public GameGrid GameGrid { get; private set; }
 
-        public GameState()
+        public GameState(string difficulty)
         {
-            Difficulty = "Normal";
+            this.Difficulty = difficulty;
 
-            if (Difficulty == "Easy")
+            if (difficulty == "Easy")
             {
                 GameGrid = new GameGrid(8, 10);
             }
-            else if (Difficulty == "Normal")
+            else if (difficulty == "Normal")
             {
                 GameGrid = new GameGrid(14, 18);
             }
-            else if (Difficulty == "Hard")
+            else if (difficulty == "Hard")
             {
                 GameGrid = new GameGrid(20, 24);
             }  
