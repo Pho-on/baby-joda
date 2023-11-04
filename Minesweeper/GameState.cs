@@ -7,6 +7,8 @@
 
         public GameGrid GameGrid { get; private set; }
 
+        public bool GameOver { get; private set; }
+
         public GameState(string difficulty)
         {
             this.Difficulty = difficulty;
