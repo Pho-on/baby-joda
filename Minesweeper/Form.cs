@@ -231,6 +231,22 @@ namespace Minesweeper
             }
         }
 
+        void Flood(int row, int column)
+        {
+            if (row > gameState.GameGrid.Rows - 1 || column > gameState.GameGrid.Columns - 1 || row < 0 || column < 0) { return; }
+            if (mineGrid[row, column] == (int)Image.Mine) { return; }
+ 
+            pictureBoxGrid[row, column].Image = tileImages[mineGrid[row, column]];
+
+            if (mineGrid[row, column] == (int)Image.Empty)
+            {
+                Flood(row - 1, column);
+                Flood(row + 1, column);
+                Flood(row, column - 1);
+                Flood(row, column + 1);
+            }
+        }
+
         void PictureBox_Click(object sender, EventArgs e)
         {
             if (gameState.GameOver)
@@ -245,7 +261,7 @@ namespace Minesweeper
             {
                 case MouseButtons.Left:
                     if (IsMineClicked(pbx)) { ShowAllMines(pbx); }
-                    else { pbx.Image = tileImages[mineGrid[((pbx.Location.Y - 15) / 30) - 1, ((pbx.Location.X + 30) / 30) - 1]]; }
+                    else { Flood(((pbx.Location.Y - 15) / 30) - 1, ((pbx.Location.X + 30) / 30) - 1); }
                     break;
                 case MouseButtons.Right:
                     pbx.Image = tileImages[(int)Image.Flag];
