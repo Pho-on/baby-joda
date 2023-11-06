@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Minesweeper
@@ -49,15 +51,38 @@ namespace Minesweeper
 
         GameState gameState = new GameState("Normal");
 
+        DateTime gameStartedAt;
+
         public Form()
         {
             InitializeComponent();
 
+            SetGameBoard();
+            cbxDifficulty.Text = "Normal";  
+        }
+
+        void SetGameBoard()
+        {
             pictureBoxGrid = SetupPictureBoxGrid(gameState.GameGrid);
             mineGrid = SetupMines(gameState.GameGrid);
+            DrawGrid(gameState.GameGrid);
+            gameStartedAt = DateTime.Now - TimeSpan.FromSeconds(1);
 
-            cbxDifficulty.Text = "Normal";
+            btnRestart.Location = new Point((this.Width / 2) - 23, 5);
+            btnRestart.Size = new Size(35, 35);
+            btnRestart.BringToFront();
+            lblTimer.Location = new Point(this.Width - 108, 12);
+            lblTimer.BringToFront();
             topDiv.SendToBack();
+        }
+
+        async Task Timer()
+        {
+            while (!gameState.GameOver)
+            {
+                lblTimer.Text = ((int)(DateTime.Now - gameStartedAt).TotalSeconds).ToString();
+                await Task.Delay(1);
+            }
         }
 
         PictureBox[,] SetupPictureBoxGrid(GameGrid grid)
@@ -202,7 +227,7 @@ namespace Minesweeper
             }
         }
 
-        private void cbxDifficulty_SelectedIndexChanged(object sender, EventArgs e)
+        private async void cbxDifficulty_SelectedIndexChanged(object sender, EventArgs e)
         {
             foreach (PictureBox pbx in pictureBoxGrid)
             {
@@ -214,9 +239,23 @@ namespace Minesweeper
             this.Width = gameState.GameGrid.Columns * 30 + 14;
             this.Height = gameState.GameGrid.Rows * 30 + 45 + 38;
 
-            pictureBoxGrid = SetupPictureBoxGrid(gameState.GameGrid);
-            mineGrid = SetupMines(gameState.GameGrid);
-            DrawGrid(gameState.GameGrid);
+            SetGameBoard();
+
+            await Timer();
+        }
+
+        private async void btnRestart_Click(object sender, EventArgs e)
+        {
+            foreach (PictureBox pbx in pictureBoxGrid)
+            {
+                Controls.Remove(pbx);
+            }
+
+            gameState = new GameState(cbxDifficulty.Text);
+
+            SetGameBoard();
+
+            await Timer();
         }
     }
 }
