@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -49,15 +51,38 @@ namespace Minesweeper
 
         GameState gameState = new GameState("Normal");
 
+        DateTime gameStartedAt;
+
         public Form()
         {
             InitializeComponent();
 
+            SetGameBoard();
+            cbxDifficulty.Text = "Normal";
+        }
+
+        void SetGameBoard()
+        {
             pictureBoxGrid = SetupPictureBoxGrid(gameState.GameGrid);
             mineGrid = SetupMines(gameState.GameGrid);
+            DrawGrid(gameState.GameGrid);
+            gameStartedAt = DateTime.Now - TimeSpan.FromSeconds(1);
 
-            cbxDifficulty.Text = "Normal";
+            btnRestart.Location = new Point((this.Width / 2) - 23, 5);
+            btnRestart.Size = new Size(35, 35);
+            btnRestart.BringToFront();
+            lblTimer.Location = new Point(this.Width - 108, 12);
+            lblTimer.BringToFront();
             topDiv.SendToBack();
+        }
+
+        async Task Timer()
+        {
+            while (!gameState.GameOver)
+            {
+                lblTimer.Text = ((int)(DateTime.Now - gameStartedAt).TotalSeconds).ToString();
+                await Task.Delay(1);
+            }
         }
 
         PictureBox[,] SetupPictureBoxGrid(GameGrid grid)
@@ -175,14 +200,14 @@ namespace Minesweeper
                     {
                         int numberOfMines = 0;
 
-                        numberOfMines += (r - 1 >= 0) && (mineGrid[r - 1, c] == 11) ? 1 : 0;                      
-                        numberOfMines += (r - 1 >= 0 && c - 1 >= 0) && (mineGrid[r - 1, c - 1] == 11) ? 1 : 0;    
-                        numberOfMines += (c - 1 >= 0) && (mineGrid[r, c - 1]  == 11) ? 1 : 0;                       
-                        numberOfMines += (r + 1 < rMax && c - 1 >= 0) && (mineGrid[r + 1, c - 1] == 11) ? 1 : 0;   
-                        numberOfMines += (r + 1 < rMax) && (mineGrid[r + 1, c] == 11) ? 1 : 0;                     
-                        numberOfMines += (r + 1 < rMax && c + 1 < cMax) && (mineGrid[r + 1, c + 1] == 11) ? 1 : 0;  
-                        numberOfMines += (c + 1 < cMax) && (mineGrid[r, c + 1] == 11) ? 1 : 0;                     
-                        numberOfMines += (r - 1 >= 0 && c + 1 < cMax) && (mineGrid[r - 1, c + 1] == 11) ? 1 : 0;     
+                        numberOfMines += (r - 1 >= 0) && (mineGrid[r - 1, c] == 11) ? 1 : 0;
+                        numberOfMines += (r - 1 >= 0 && c - 1 >= 0) && (mineGrid[r - 1, c - 1] == 11) ? 1 : 0;
+                        numberOfMines += (c - 1 >= 0) && (mineGrid[r, c - 1] == 11) ? 1 : 0;
+                        numberOfMines += (r + 1 < rMax && c - 1 >= 0) && (mineGrid[r + 1, c - 1] == 11) ? 1 : 0;
+                        numberOfMines += (r + 1 < rMax) && (mineGrid[r + 1, c] == 11) ? 1 : 0;
+                        numberOfMines += (r + 1 < rMax && c + 1 < cMax) && (mineGrid[r + 1, c + 1] == 11) ? 1 : 0;
+                        numberOfMines += (c + 1 < cMax) && (mineGrid[r, c + 1] == 11) ? 1 : 0;
+                        numberOfMines += (r - 1 >= 0 && c + 1 < cMax) && (mineGrid[r - 1, c + 1] == 11) ? 1 : 0;
 
                         matrixOutput[r, c] = numberOfMines;
                     }
@@ -235,11 +260,12 @@ namespace Minesweeper
         {
             if (row > gameState.GameGrid.Rows - 1 || column > gameState.GameGrid.Columns - 1 || row < 0 || column < 0) { return; }
             if (mineGrid[row, column] == (int)Image.Mine) { return; }
- 
+
             pictureBoxGrid[row, column].Image = tileImages[mineGrid[row, column]];
 
             if (mineGrid[row, column] == (int)Image.Empty)
             {
+                //funkar inte alla tillsammans, endast 2 och 2
                 Flood(row - 1, column);
                 Flood(row + 1, column);
                 Flood(row, column - 1);
@@ -271,7 +297,7 @@ namespace Minesweeper
             }
         }
 
-        private void cbxDifficulty_SelectedIndexChanged(object sender, EventArgs e)
+        private async void cbxDifficulty_SelectedIndexChanged(object sender, EventArgs e)
         {
             foreach (PictureBox pbx in pictureBoxGrid)
             {
@@ -283,9 +309,23 @@ namespace Minesweeper
             this.Width = gameState.GameGrid.Columns * 30 + 14;
             this.Height = gameState.GameGrid.Rows * 30 + 45 + 38;
 
-            pictureBoxGrid = SetupPictureBoxGrid(gameState.GameGrid);
-            mineGrid = SetupMines(gameState.GameGrid);
-            DrawGrid(gameState.GameGrid);
+            SetGameBoard();
+
+            await Timer();
+        }
+
+        private async void btnRestart_Click(object sender, EventArgs e)
+        {
+            foreach (PictureBox pbx in pictureBoxGrid)
+            {
+                Controls.Remove(pbx);
+            }
+
+            gameState = new GameState(cbxDifficulty.Text);
+
+            SetGameBoard();
+
+            await Timer();
         }
     }
 }
