@@ -166,7 +166,54 @@ namespace Minesweeper
                 }
             }
 
+            for (int r = 0; r < gameState.GameGrid.Rows; r++)
+            {
+                for (int c = 0; c < gameState.GameGrid.Columns; c++)
+                {
+                    if (mineGrid[r, c] != (int)Image.Mine)
+                    {
+                        mineGrid = SuroundingMines(mineGrid);
+                    }
+                }
+            }
+
             return mineGrid;
+        }
+
+        int[,] SuroundingMines(int[,] mineGrid)
+        {
+            int[,] matrixOutput = new int[mineGrid.GetLength(0), mineGrid.GetLength(1)];
+
+            int rMax = mineGrid.GetLength(0);
+            int cMax = mineGrid.GetLength(1);
+
+            for (int r = 0; r < rMax; r++)
+            {
+                for (int c = 0; c < cMax; c++)
+                {
+                    if (mineGrid[r, c] == (int)Image.Mine)
+                    {
+                        matrixOutput[r, c] = (int)Image.Mine;
+                    }
+                    else
+                    {
+                        int numberOfMines = 0;
+
+                        numberOfMines += (r - 1 >= 0) && (mineGrid[r - 1, c] == 11) ? 1 : 0;
+                        numberOfMines += (r - 1 >= 0 && c - 1 >= 0) && (mineGrid[r - 1, c - 1] == 11) ? 1 : 0;
+                        numberOfMines += (c - 1 >= 0) && (mineGrid[r, c - 1] == 11) ? 1 : 0;
+                        numberOfMines += (r + 1 < rMax && c - 1 >= 0) && (mineGrid[r + 1, c - 1] == 11) ? 1 : 0;
+                        numberOfMines += (r + 1 < rMax) && (mineGrid[r + 1, c] == 11) ? 1 : 0;
+                        numberOfMines += (r + 1 < rMax && c + 1 < cMax) && (mineGrid[r + 1, c + 1] == 11) ? 1 : 0;
+                        numberOfMines += (c + 1 < cMax) && (mineGrid[r, c + 1] == 11) ? 1 : 0;
+                        numberOfMines += (r - 1 >= 0 && c + 1 < cMax) && (mineGrid[r - 1, c + 1] == 11) ? 1 : 0;
+
+                        matrixOutput[r, c] = numberOfMines;
+                    }
+                }
+            }
+
+            return matrixOutput;
         }
 
         void DrawGrid(GameGrid grid)
