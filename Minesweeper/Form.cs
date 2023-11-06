@@ -237,17 +237,37 @@ namespace Minesweeper
             return false;
         }
 
-        void ShowAllMines()
+        async void ShowAllMines(PictureBox pbx)
         {
+            pictureBoxGrid[((pbx.Location.Y - 15) / 30) - 1, ((pbx.Location.X + 30) / 30) - 1].Image = tileImages[(int)Image.Exploded];
+            await Task.Delay(85);
+
             for (int r = 0; r < gameState.GameGrid.Rows; r++)
             {
                 for (int c = 0; c < gameState.GameGrid.Columns; c++)
                 {
-                    if (mineGrid[r, c] == (int)Image.Mine)
+                    if (mineGrid[r, c] == (int)Image.Mine && pictureBoxGrid[r, c].Image != tileImages[(int)Image.Exploded])
                     {
-                        pictureBoxGrid[r, c].Image = tileImages[(int)Image.Exploded];
+                        pictureBoxGrid[r, c].Image = tileImages[(int)Image.Mine];
+                        await Task.Delay(85);
                     }
                 }
+            }
+        }
+
+        void Flood(int row, int column)
+        {
+            if (row > gameState.GameGrid.Rows - 1 || column > gameState.GameGrid.Columns - 1 || row < 0 || column < 0) { return; }
+            if (mineGrid[row, column] == (int)Image.Mine) { return; }
+
+            pictureBoxGrid[row, column].Image = tileImages[mineGrid[row, column]];
+
+            if (mineGrid[row, column] == (int)Image.Empty)
+            {
+                Flood(row - 1, column);
+                Flood(row + 1, column);
+                Flood(row, column - 1);
+                Flood(row, column + 1);
             }
         }
 
@@ -264,7 +284,8 @@ namespace Minesweeper
             switch (args.Button)
             {
                 case MouseButtons.Left:
-                     if (IsMineClicked(pbx)) { ShowAllMines(); }
+                     if (IsMineClicked(pbx)) { ShowAllMines(pbx); }
+                     else { Flood(((pbx.Location.Y - 15) / 30) - 1, ((pbx.Location.X + 30) / 30) - 1); }
                     break;
                 case MouseButtons.Right:
                     pbx.Image = tileImages[(int)Image.Flag];
