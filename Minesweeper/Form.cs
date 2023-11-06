@@ -260,6 +260,7 @@ namespace Minesweeper
         {
             if (row > gameState.GameGrid.Rows - 1 || column > gameState.GameGrid.Columns - 1 || row < 0 || column < 0) { return; }
             if (mineGrid[row, column] == (int)Image.Mine) { return; }
+            if (pictureBoxGrid[row, column].Image != tileImages[(int)Image.Unknown]) { return; }
 
             pictureBoxGrid[row, column].Image = tileImages[mineGrid[row, column]];
 
