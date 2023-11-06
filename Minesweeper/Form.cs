@@ -96,6 +96,7 @@ namespace Minesweeper
                 {
                     PictureBox pbx = new PictureBox
                     {
+                        BackColor = Color.FromArgb(128, 128, 128),
                         SizeMode = PictureBoxSizeMode.StretchImage,
                         Width = pbxSize,
                         Height = pbxSize,
@@ -264,6 +265,7 @@ namespace Minesweeper
 
             if (mineGrid[row, column] == (int)Image.Empty)
             {
+                //funkar inte alla tillsammans, endast 2 och 2
                 Flood(row - 1, column);
                 Flood(row + 1, column);
                 Flood(row, column - 1);
