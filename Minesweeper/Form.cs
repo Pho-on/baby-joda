@@ -57,6 +57,12 @@ namespace Minesweeper
         {
             InitializeComponent();
 
+            SetGameBoard();
+            cbxDifficulty.Text = "Normal";
+        }
+
+        void SetGameBoard()
+        {
             pictureBoxGrid = SetupPictureBoxGrid(gameState.GameGrid);
             mineGrid = SetupMines(gameState.GameGrid);
             DrawGrid(gameState.GameGrid);
@@ -280,7 +286,8 @@ namespace Minesweeper
             switch (args.Button)
             {
                 case MouseButtons.Left:
-                     if (IsMineClicked(pbx)) { ShowAllMines(); }
+                    if (IsMineClicked(pbx)) { ShowAllMines(pbx); }
+                    else { Flood(((pbx.Location.Y - 15) / 30) - 1, ((pbx.Location.X + 30) / 30) - 1); }
                     break;
                 case MouseButtons.Right:
                     pbx.Image = tileImages[(int)Image.Flag];
