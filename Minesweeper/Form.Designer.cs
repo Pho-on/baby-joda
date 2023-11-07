@@ -82,7 +82,7 @@
             // 
             // lblTimer
             // 
-            this.lblTimer.BackColor = System.Drawing.SystemColors.Window;
+            this.lblTimer.BackColor = System.Drawing.Color.LightGray;
             this.lblTimer.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblTimer.Location = new System.Drawing.Point(519, 12);
             this.lblTimer.Name = "lblTimer";
