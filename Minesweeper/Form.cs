@@ -241,6 +241,7 @@ namespace Minesweeper
         async void ShowAllMines(PictureBox pbx)
         {
             pictureBoxGrid[((pbx.Location.Y - 15) / 30) - 1, ((pbx.Location.X + 30) / 30) - 1].Image = tileImages[(int)Image.Exploded];
+            pictureBoxGrid[((pbx.Location.Y - 15) / 30) - 1, ((pbx.Location.X + 30) / 30) - 1].Enabled = false;
             await Task.Delay(85);
 
             for (int r = 0; r < gameState.GameGrid.Rows; r++)
@@ -250,6 +251,7 @@ namespace Minesweeper
                     if (mineGrid[r, c] == (int)Image.Mine && pictureBoxGrid[r, c].Image != tileImages[(int)Image.Exploded])
                     {
                         pictureBoxGrid[r, c].Image = tileImages[(int)Image.Mine];
+                        pictureBoxGrid[r, c].Enabled = false;
                         await Task.Delay(85);
                     }
                 }
@@ -267,9 +269,13 @@ namespace Minesweeper
             if (mineGrid[row, column] == (int)Image.Empty)
             {
                 Flood(row - 1, column);
+                Flood(row - 1, column + 1);
                 Flood(row + 1, column);
+                Flood(row + 1, column + 1);
                 Flood(row, column - 1);
+                Flood(row + 1, column - 1);
                 Flood(row, column + 1);
+                Flood(row - 1, column + 1);
             }
         }
 
