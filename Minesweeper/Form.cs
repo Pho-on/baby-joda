@@ -131,6 +131,7 @@ namespace Minesweeper
         void Flood(int cellRow, int cellColumn)
         {
             if (cellRow < 0 || cellRow >= state.GetLength(0) || cellColumn < 0 || cellColumn >= state.GetLength(1)) { return; }
+            if (state[cellRow, cellColumn].type == Cell.Type.Mine) { return; }
             if (state[cellRow, cellColumn].revealed) { return; }
 
             Cell cell = state[cellRow, cellColumn];
@@ -141,14 +142,14 @@ namespace Minesweeper
 
             if (cell.type == Cell.Type.Empty)
             {
-                Flood(cellRow - 1, cellColumn);
-                Flood(cellRow - 1, cellColumn + 1);
-                Flood(cellRow + 1, cellColumn);
-                Flood(cellRow + 1, cellColumn - 1);
-                Flood(cellRow, cellColumn - 1);
-                Flood(cellRow + 1, cellColumn - 1);
-                Flood(cellRow, cellColumn + 1);
-                Flood(cellRow - 1, cellColumn + 1);
+                Flood(cellRow - 1, cellColumn);     // N
+                Flood(cellRow - 1, cellColumn + 1); // NE
+                Flood(cellRow, cellColumn + 1);     // E
+                Flood(cellRow + 1, cellColumn + 1); // SE
+                Flood(cellRow + 1, cellColumn);     // S
+                Flood(cellRow + 1, cellColumn - 1); // SW
+                Flood(cellRow, cellColumn - 1);     // W
+                Flood(cellRow - 1, cellColumn - 1); // NW
             }
         }
 
@@ -160,7 +161,7 @@ namespace Minesweeper
             cell.exploded = true;
             state[cell.row, cell.column] = cell;
             state[cell.row, cell.column].Image = board.GetTile(cell);
-            await Task.Delay(75);
+            await Task.Delay(50);
 
             for (int r = 0; r < state.GetLength(0); r++)
             {
@@ -173,7 +174,7 @@ namespace Minesweeper
                         cell.revealed = true;
                         state[r, c] = cell;
                         state[cell.row, cell.column].Image = board.GetTile(cell);
-                        await Task.Delay(75);
+                        await Task.Delay(50);
                     }
                 }
             }

@@ -65,10 +65,11 @@
             // 
             // cbxDifficulty
             // 
-            this.cbxDifficulty.BackColor = System.Drawing.SystemColors.Window;
+            this.cbxDifficulty.BackColor = System.Drawing.Color.Gainsboro;
             this.cbxDifficulty.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbxDifficulty.DisplayMember = "(none)";
             this.cbxDifficulty.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxDifficulty.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbxDifficulty.FormattingEnabled = true;
             this.cbxDifficulty.Items.AddRange(new object[] {
             "Easy",
@@ -83,6 +84,7 @@
             // lblTimer
             // 
             this.lblTimer.BackColor = System.Drawing.Color.LightGray;
+            this.lblTimer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTimer.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblTimer.Location = new System.Drawing.Point(519, 12);
             this.lblTimer.Name = "lblTimer";
