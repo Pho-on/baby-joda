@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Minesweeper
@@ -17,21 +19,44 @@ namespace Minesweeper
         Board board = new Board();
         Cell[,] state;
 
+        bool gameOver;
+
         public Form()
         {
             InitializeComponent();
 
             cbxDifficulty.Text = "Normal";
+        }
+
+        private void cbxDifficulty_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            NewGame();
+        }
+
+        private void btnRestart_Click(object sender, EventArgs e)
+        {
             NewGame();
         }
 
         void NewGame()
         {
+            gameOver = false;
+
+            if (state != null)
+            {
+                foreach (Cell cell in state)
+                {
+                    Controls.Remove(cell);
+                }
+            }
+
+            GetGameDifficulty(cbxDifficulty.Text);
+
             state = new Cell[GetRows(difficulty), GetColumns(difficulty)];
 
-            SetForm();
-            GetGameDifficulty(cbxDifficulty.Text);
             GenerateCells();
+            GenerateMines();
+            SetForm();
         }
 
         void GenerateCells()
@@ -51,10 +76,32 @@ namespace Minesweeper
                         type = Cell.Type.Empty,
                     };
 
+                    cell.Click += Cell_Click;
                     cell.Image = board.GetTile(cell);
                     state[r, c] = cell;
                     Controls.Add(cell);
                 }
+            }
+        }
+
+        void Cell_Click(object sender, EventArgs e)
+        {
+            if (gameOver)
+            {
+                return;
+            }
+
+            var args = e as MouseEventArgs;
+            var cell = sender as Cell;
+
+            switch (args.Button)
+            {
+                case MouseButtons.Left:
+                    break;
+                case MouseButtons.Right:
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -106,13 +153,48 @@ namespace Minesweeper
             }
         }
 
+        int GetMineCount(Difficulty difficulty)
+        {
+            switch (difficulty)
+            {
+                case Difficulty.Easy:
+                    return 10;
+                case Difficulty.Normal:
+                    return 40;
+                case Difficulty.Hard:
+                    return 99;
+                default:
+                    return 0;
+            }
+        }
+
+        void GenerateMines()
+        {
+            int i = 0;
+
+            while (i < GetMineCount(difficulty))
+            {
+                Random random = new Random();
+
+                int r = random.Next(0, state.GetLength(0));
+                int c = random.Next(0, state.GetLength(1));
+
+                if (state[r, c].type != Cell.Type.Mine)
+                {
+                    state[r, c].type = Cell.Type.Mine;
+                    i++;
+                }
+            }
+        }
+
         void SetForm()
         {
             this.Width = 30 * state.GetLength(0) + 16;
-            this.Height = 30 * state.GetLength(1) + 68;
+            this.Height = 30 * state.GetLength(1) + 84;
 
-            btnRestart.Location = new Point(this.Width / 2 - 8, 5);
-            lblTimer.Location = new Point(this.Width - 108, 12);
+            btnRestart.Location = new Point(this.Width / 2 - 26, 5);
+            btnRestart.Size = new Size(35, 35);
+            lblTimer.Location = new Point(this.Width - 110, 12);
         }
     }
 }

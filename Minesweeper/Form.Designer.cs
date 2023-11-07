@@ -61,6 +61,7 @@
             this.btnRestart.Size = new System.Drawing.Size(35, 35);
             this.btnRestart.TabIndex = 2;
             this.btnRestart.UseVisualStyleBackColor = false;
+            this.btnRestart.Click += new System.EventHandler(this.btnRestart_Click);
             // 
             // cbxDifficulty
             // 
@@ -77,10 +78,12 @@
             this.cbxDifficulty.Name = "cbxDifficulty";
             this.cbxDifficulty.Size = new System.Drawing.Size(82, 21);
             this.cbxDifficulty.TabIndex = 3;
+            this.cbxDifficulty.SelectedIndexChanged += new System.EventHandler(this.cbxDifficulty_SelectedIndexChanged);
             // 
             // lblTimer
             // 
             this.lblTimer.BackColor = System.Drawing.SystemColors.Window;
+            this.lblTimer.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblTimer.Location = new System.Drawing.Point(519, 12);
             this.lblTimer.Name = "lblTimer";
             this.lblTimer.Size = new System.Drawing.Size(82, 21);
