@@ -100,6 +100,7 @@ namespace Minesweeper
             else
             {
                 Reveal(cell);
+                CheckWin();
             }
         }
 
@@ -193,6 +194,19 @@ namespace Minesweeper
                 }
             }
 
+        }
+
+        void CheckWin()
+        {
+            foreach (Cell cell in state)
+            {
+                if (cell.type != Cell.Type.Mine && !cell.revealed)
+                {
+                    return;
+                }
+            }
+
+            gameOver = true;
         }
 
         async Task Timer()
