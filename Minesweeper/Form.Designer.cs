@@ -50,7 +50,7 @@
             this.btnRestart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRestart.BackColor = System.Drawing.SystemColors.Desktop;
+            this.btnRestart.BackColor = System.Drawing.Color.DimGray;
             this.btnRestart.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnRestart.BackgroundImage")));
             this.btnRestart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnRestart.Cursor = System.Windows.Forms.Cursors.Hand;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -22,6 +23,7 @@ namespace Minesweeper
         DateTime gameStartedAt;
 
         bool gameOver;
+        bool firstClick = true;
 
         public Form()
         {
@@ -33,6 +35,7 @@ namespace Minesweeper
         async void NewGame()
         {
             gameOver = false;
+            firstClick = true;
             gameStartedAt = DateTime.Now - TimeSpan.FromSeconds(1);
 
             if (state != null)
@@ -48,8 +51,6 @@ namespace Minesweeper
             state = new Cell[GetRows(difficulty), GetColumns(difficulty)];
 
             GenerateCells();
-            GenerateMines();
-            GenerateNumbers();
             SetForm();
             await Timer();
         }
@@ -77,7 +78,7 @@ namespace Minesweeper
             switch (args.Button)
             {
                 case MouseButtons.Left:
-                    Reveal(cell);
+                    HandleLeftClick(cell);
                     break;
 
                 case MouseButtons.Right:
@@ -86,6 +87,20 @@ namespace Minesweeper
 
                 default:
                     break;
+            }
+        }
+
+        void HandleLeftClick(Cell cell)
+        {
+            if (firstClick)
+            {
+                GeneraateCellTypes(cell);
+                Reveal(cell);
+                firstClick = false;
+            }
+            else
+            {
+                Reveal(cell);
             }
         }
 
@@ -279,22 +294,63 @@ namespace Minesweeper
             }
         }
 
-        void GenerateMines()
+        int GetNoMineSpace(Difficulty difficulty)
         {
-            int i = 0;
+            switch (difficulty)
+            {
+                case Difficulty.Easy:
+                    return 1;
+                case Difficulty.Normal:
+                    return 2;
+                case Difficulty.Hard:
+                    return 4;
+                default:
+                    return 0;
+            }
+        }
 
-            while (i < GetMineCount(difficulty))
+        void GenerateMines(Cell cell)
+        {
+            // funkar inte
+            for (int i = 0; i < GetMineCount(difficulty); i++)
             {
                 Random random = new Random();
 
                 int r = random.Next(0, state.GetLength(0));
                 int c = random.Next(0, state.GetLength(1));
 
-                if (state[r, c].type != Cell.Type.Mine)
+                while (r < (cell.row + GetNoMineSpace(difficulty)) && r > (cell.row - GetNoMineSpace(difficulty)) &&
+                      c < (cell.column + GetNoMineSpace(difficulty)) && c > (cell.column - GetNoMineSpace(difficulty)))
                 {
-                    state[r, c].type = Cell.Type.Mine;
-                    i++;
+                    random = new Random();
+
+                    r = random.Next(0, state.GetLength(0));
+                    c = random.Next(0, state.GetLength(1));
                 }
+
+                while (state[r, c].type == Cell.Type.Mine)
+                {
+                    r++;
+
+                    if (r >= state.GetLength(0))
+                    {
+                        r = 0;
+                        c++;
+
+                        if (c >= state.GetLength(1))
+                        {
+                            c = 0;
+                        }
+                    }
+                    
+                    if ((r < (cell.row + GetNoMineSpace(difficulty)) || r > (cell.row - GetNoMineSpace(difficulty))) &&
+                       (c < (cell.column + GetNoMineSpace(difficulty)) || c > (cell.column - GetNoMineSpace(difficulty))))
+                    {
+                        continue;
+                    }
+                }
+
+                state[r, c].type = Cell.Type.Mine;
             }
         }
 
@@ -352,6 +408,13 @@ namespace Minesweeper
             }
 
             return count;
+        }
+
+        void GeneraateCellTypes(Cell cell)
+        {
+            GenerateMines(cell);
+            CountMines(cell.row, cell.column);
+            GenerateNumbers();
         }
 
         void SetForm()
