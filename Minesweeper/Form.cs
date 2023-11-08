@@ -299,11 +299,11 @@ namespace Minesweeper
             switch (difficulty)
             {
                 case Difficulty.Easy:
-                    return 1;
+                    return 2;
                 case Difficulty.Normal:
                     return 2;
                 case Difficulty.Hard:
-                    return 4;
+                    return 3;
                 default:
                     return 0;
             }
@@ -311,8 +311,9 @@ namespace Minesweeper
 
         void GenerateMines(Cell cell)
         {
-            // funkar inte
-            for (int i = 0; i < GetMineCount(difficulty); i++)
+            int i = 0;
+            
+            while (i < GetMineCount(difficulty))
             {
                 Random random = new Random();
 
@@ -328,29 +329,11 @@ namespace Minesweeper
                     c = random.Next(0, state.GetLength(1));
                 }
 
-                while (state[r, c].type == Cell.Type.Mine)
+                if (state[r, c].type != Cell.Type.Mine)
                 {
-                    r++;
-
-                    if (r >= state.GetLength(0))
-                    {
-                        r = 0;
-                        c++;
-
-                        if (c >= state.GetLength(1))
-                        {
-                            c = 0;
-                        }
-                    }
-                    
-                    if ((r < (cell.row + GetNoMineSpace(difficulty)) || r > (cell.row - GetNoMineSpace(difficulty))) &&
-                       (c < (cell.column + GetNoMineSpace(difficulty)) || c > (cell.column - GetNoMineSpace(difficulty))))
-                    {
-                        continue;
-                    }
+                    state[r, c].type = Cell.Type.Mine;
+                    i++;
                 }
-
-                state[r, c].type = Cell.Type.Mine;
             }
         }
 
