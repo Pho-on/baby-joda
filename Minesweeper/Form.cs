@@ -337,6 +337,7 @@ namespace Minesweeper
 
         void GenerateMines(Cell cell)
         {
+            // funkar inte
             for (int i = 0; i < GetMineCount(difficulty); i++)
             {
                 Random random = new Random();
