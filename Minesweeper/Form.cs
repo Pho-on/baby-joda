@@ -100,7 +100,6 @@ namespace Minesweeper
             else
             {
                 Reveal(cell);
-                CheckWin();
             }
         }
 
@@ -141,6 +140,7 @@ namespace Minesweeper
             }
 
             state[cell.row, cell.column].Image = board.GetTile(cell);
+            CheckWin();
         }
 
         void Flood(int cellRow, int cellColumn)
@@ -314,38 +314,227 @@ namespace Minesweeper
                 case Difficulty.Easy:
                     return 2;
                 case Difficulty.Normal:
-                    return 2;
-                case Difficulty.Hard:
                     return 3;
+                case Difficulty.Hard:
+                    return 4;
                 default:
                     return 0;
             }
         }
 
+        bool IsInsideNoMineSpace(Cell cell, int r, int c)
+        {
+            if (r < (cell.row + GetNoMineSpace(difficulty)) && r > (cell.row - GetNoMineSpace(difficulty)) &&
+               c < (cell.column + GetNoMineSpace(difficulty)) && c > (cell.column - GetNoMineSpace(difficulty)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         void GenerateMines(Cell cell)
         {
-            int i = 0;
-            
-            while (i < GetMineCount(difficulty))
+            for (int i = 0; i < GetMineCount(difficulty); i++)
             {
                 Random random = new Random();
 
-                int r = random.Next(0, state.GetLength(0));
-                int c = random.Next(0, state.GetLength(1));
+                int r = random.Next(0, state.GetLength(0) - 1);
+                int c = random.Next(0, state.GetLength(1) - 1);
 
-                while (r < (cell.row + GetNoMineSpace(difficulty)) && r > (cell.row - GetNoMineSpace(difficulty)) &&
-                      c < (cell.column + GetNoMineSpace(difficulty)) && c > (cell.column - GetNoMineSpace(difficulty)))
+                if (IsInsideNoMineSpace(cell, r, c))
                 {
-                    random = new Random();
+                    while (r < (cell.row + GetNoMineSpace(difficulty)) && r >= cell.row)
+                    {
+                        r++;
 
-                    r = random.Next(0, state.GetLength(0));
-                    c = random.Next(0, state.GetLength(1));
+                        if (r >= state.GetLength(0))
+                        {
+                            r = 0;
+                        }
+                    }
+
+                    if (!IsInsideNoMineSpace(cell, r, c))
+                    {
+                        while (state[r, c].type == Cell.Type.Mine)
+                        {
+                            r++;
+
+                            if (r >= state.GetLength(0))
+                            {
+                                r = 0;
+                                c++;
+
+                                if (c >= state.GetLength(1))
+                                {
+                                    c = 0;
+                                }
+                            }
+                        }
+
+                        if (IsInsideNoMineSpace(cell, r, c))
+                        {
+                            i--;
+                            continue;
+                        }
+                        else
+                        {
+                            state[r, c].type = Cell.Type.Mine;
+                            continue;
+                        }
+                    }
+
+                    
+
+                    while (r >= (cell.row - GetNoMineSpace(difficulty)) && r <= cell.row)
+                    {
+                        r--;
+
+                        if (r <= 0)
+                        {
+                            r = state.GetLength(0) - 1;
+                        }
+                    }
+
+                    if (!IsInsideNoMineSpace(cell, r, c))
+                    {
+                        while (state[r, c].type == Cell.Type.Mine)
+                        {
+                            r--;
+
+                            if (r <= 0)
+                            {
+                                r = state.GetLength(0) - 1;
+                                c--;
+
+                                if (c <= 0)
+                                {
+                                    c = 0;
+                                }
+                            }
+                        }
+
+                        if (IsInsideNoMineSpace(cell, r, c))
+                        {
+                            i--;
+                            continue;
+                        }
+                        else
+                        {
+                            state[r, c].type = Cell.Type.Mine;
+                            continue;
+                        }
+                    }
+
+                    while (c <= (cell.column + GetNoMineSpace(difficulty)) && c >= cell.column)
+                    {
+                        c++;
+
+                        if (c >= state.GetLength(1))
+                        {
+                            c = 0;
+                        }
+                    }
+
+                    if (!IsInsideNoMineSpace(cell, r, c))
+                    {
+                        while (state[r, c].type == Cell.Type.Mine)
+                        {
+                            c++;
+
+                            if (c >= state.GetLength(1))
+                            {
+                                c = 0;
+                                r++;
+
+                                if (r >= state.GetLength(0))
+                                {
+                                    r = 0;
+                                }
+                            }
+                        }
+
+                        if (IsInsideNoMineSpace(cell, r, c))
+                        {
+                            i--;
+                            continue;
+                        }
+                        else
+                        {
+                            state[r, c].type = Cell.Type.Mine;
+                            continue;
+                        }
+                    }
+
+                    while (c >= (cell.column - GetNoMineSpace(difficulty)) && c <= cell.column)
+                    {
+                        c--;
+
+                        if (c <= 0)
+                        {
+                            c = state.GetLength(1) - 1;
+                        }
+                    }
+
+                    if (!IsInsideNoMineSpace(cell, r, c))
+                    {
+                        while (state[r, c].type == Cell.Type.Mine)
+                        {
+                            c--;
+
+                            if (c <= 0)
+                            {
+                                c = state.GetLength(1) - 1;
+                                r--;
+
+                                if (r <= 0)
+                                {
+                                    r = 0;
+                                }
+                            }
+                        }
+
+                        if (IsInsideNoMineSpace(cell, r, c))
+                        {
+                            i--;
+                            continue;
+                        }
+                        else
+                        {
+                            state[r, c].type = Cell.Type.Mine;
+                            continue;
+                        }
+                    }
                 }
-
-                if (state[r, c].type != Cell.Type.Mine)
+                else
                 {
-                    state[r, c].type = Cell.Type.Mine;
-                    i++;
+                    while (state[r, c].type == Cell.Type.Mine)
+                    {
+                        r++;
+
+                        if (r >= state.GetLength(0))
+                        {
+                            r = 0;
+                            c++;
+
+                            if (c >= state.GetLength(1))
+                            {
+                                c = 0;
+                            }
+                        }
+                    }
+
+                    if (IsInsideNoMineSpace(cell, r, c))
+                    {
+                        i--;
+                        continue;
+                    }
+                    else
+                    {
+                        state[r, c].type = Cell.Type.Mine;
+                    }
                 }
             }
         }
@@ -423,4 +612,4 @@ namespace Minesweeper
             lblTimer.Location = new Point(this.Width - 110, 12);
         }
     }
-}
+} 
