@@ -18,6 +18,7 @@ namespace Minesweeper
 
         Board board = new Board();
         Cell[,] state;
+        Random random;
 
         DateTime gameStartedAt;
 
@@ -309,16 +310,27 @@ namespace Minesweeper
             }
         }
 
-        bool IsInsideNoMineSpace(Cell cell, int r, int c)
+        string IsInsideNoMineSpace(Cell cell, int r, int c)
         {
-            if (r < (cell.row + noMineSpace) && r > (cell.row - noMineSpace) &&
-               c < (cell.column + noMineSpace) && c > (cell.column - noMineSpace))
+            if (r < (cell.row + noMineSpace) && r >= cell.row)
             {
-                return true;
+                return "S";
+            }
+            else if (r > (cell.row - noMineSpace) && r <= cell.row)
+            {
+                return "N";
+            }
+            else if (c < (cell.column + noMineSpace) && c >= cell.column)
+            {
+                return "W";
+            }
+            else if (c > (cell.column - noMineSpace))
+            {
+                return "E";
             }
             else
             {
-                return false;
+                return "Clear!";
             }
         }
 
@@ -327,28 +339,72 @@ namespace Minesweeper
             // funkar inte
             for (int i = 0; i < GetMineCount(difficulty); i++)
             {
-                Random random = new Random();
-
+                random = new Random();
                 int r = random.Next(0, state.GetLength(0) - 1);
+
+                random = new Random();
                 int c = random.Next(0, state.GetLength(1) - 1);
 
-                while (IsInsideNoMineSpace(cell, r, c) || state[r, c].type == Cell.Type.Mine)
+                while (IsInsideNoMineSpace(cell, r, c) != "Celar!" || state[r, c].type == Cell.Type.Mine)
                 {
-                    r++;
-
-                    if (r >= state.GetLength(0) - 1)
+                    switch (IsInsideNoMineSpace(cell, r, c))
                     {
-                        r = 0;
-                        c++;
+                        case "N":
+                            random = new Random();
+                            r = random.Next(0, cell.row - 1);
 
-                        if (c >= state.GetLength(1) - 1)
+                            random = new Random();
+                            c = random.Next(0, state.GetLength(1) - 1);
+                            break;
+
+                        case "S":
+                            random = new Random();
+                            r = random.Next(cell.row + 1, state.GetLength(0) - 1);
+
+                            random = new Random();
+                            c = random.Next(0, state.GetLength(1) - 1);
+                            break;
+
+                        case "E":
+                            random = new Random();
+                            r = random.Next(0, state.GetLength(0) - 1);
+
+                            random = new Random();
+                            c = random.Next(cell.column + 1, state.GetLength(1) - 1);
+                            break;
+
+                        case "W":
+                            random = new Random();
+                            r = random.Next(0, state.GetLength(0) - 1);
+
+                            random = new Random();
+                            c = random.Next(0, cell.column - 1);
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    while (state[r, c].type == Cell.Type.Mine)
+                    {
+                        r++;
+
+                        if (r >= state.GetLength(0))
                         {
-                            c = 0;
+                            r = 0;
+                            c++;
+
+                            if (c >= state.GetLength(1))
+                            {
+                                c = 0;
+                            }
                         }
                     }
                 }
 
                 state[r, c].type = Cell.Type.Mine;
+                state[r, c].revealed = true;
+                state[r, c].Image = board.GetTile(state[r, c]);
             }
         }
 
