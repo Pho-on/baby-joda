@@ -310,27 +310,16 @@ namespace Minesweeper
             }
         }
 
-        string IsInsideNoMineSpace(Cell cell, int r, int c)
+        bool IsInsideNoMineSpace(Cell cell, int r, int c)
         {
-            if (r < (cell.row + noMineSpace) && r >= cell.row)
+            if (r < (cell.row + noMineSpace) && r > (cell.row - noMineSpace) && 
+                c < (cell.column + noMineSpace) && c > (cell.column - noMineSpace))
             {
-                return "S";
-            }
-            else if (r > (cell.row - noMineSpace) && r <= cell.row)
-            {
-                return "N";
-            }
-            else if (c < (cell.column + noMineSpace) && c >= cell.column)
-            {
-                return "W";
-            }
-            else if (c > (cell.column - noMineSpace))
-            {
-                return "E";
+                return true;
             }
             else
             {
-                return "Clear!";
+                return false;
             }
         }
 
@@ -345,66 +334,16 @@ namespace Minesweeper
                 random = new Random();
                 int c = random.Next(0, state.GetLength(1) - 1);
 
-                while (IsInsideNoMineSpace(cell, r, c) != "Celar!" || state[r, c].type == Cell.Type.Mine)
+                while (IsInsideNoMineSpace(cell, r, c) || state[r, c].type == Cell.Type.Mine)
                 {
-                    switch (IsInsideNoMineSpace(cell, r, c))
-                    {
-                        case "N":
-                            random = new Random();
-                            r = random.Next(0, cell.row - 1);
+                    random = new Random();
+                    r = random.Next(0, state.GetLength(0) - 1);
 
-                            random = new Random();
-                            c = random.Next(0, state.GetLength(1) - 1);
-                            break;
-
-                        case "S":
-                            random = new Random();
-                            r = random.Next(cell.row + 1, state.GetLength(0) - 1);
-
-                            random = new Random();
-                            c = random.Next(0, state.GetLength(1) - 1);
-                            break;
-
-                        case "E":
-                            random = new Random();
-                            r = random.Next(0, state.GetLength(0) - 1);
-
-                            random = new Random();
-                            c = random.Next(cell.column + 1, state.GetLength(1) - 1);
-                            break;
-
-                        case "W":
-                            random = new Random();
-                            r = random.Next(0, state.GetLength(0) - 1);
-
-                            random = new Random();
-                            c = random.Next(0, cell.column - 1);
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                    while (state[r, c].type == Cell.Type.Mine)
-                    {
-                        r++;
-
-                        if (r >= state.GetLength(0))
-                        {
-                            r = 0;
-                            c++;
-
-                            if (c >= state.GetLength(1))
-                            {
-                                c = 0;
-                            }
-                        }
-                    }
+                    random = new Random();
+                    c = random.Next(0, state.GetLength(1) - 1);
                 }
 
                 state[r, c].type = Cell.Type.Mine;
-                state[r, c].revealed = true;
-                state[r, c].Image = board.GetTile(state[r, c]);
             }
         }
 
