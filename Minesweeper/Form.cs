@@ -160,14 +160,14 @@ namespace Minesweeper
 
             if (cell.type == Cell.Type.Empty)
             {
-                Flood(cellRow - 1, cellColumn);     // N
-                Flood(cellRow - 1, cellColumn + 1); // NE
-                Flood(cellRow, cellColumn + 1);     // E
-                Flood(cellRow + 1, cellColumn + 1); // SE
-                Flood(cellRow + 1, cellColumn);     // S
-                Flood(cellRow + 1, cellColumn - 1); // SW
-                Flood(cellRow, cellColumn - 1);     // W
-                Flood(cellRow - 1, cellColumn - 1); // NW
+                Flood(cellRow - 1, cellColumn);     
+                Flood(cellRow - 1, cellColumn + 1); 
+                Flood(cellRow, cellColumn + 1);     
+                Flood(cellRow + 1, cellColumn + 1); 
+                Flood(cellRow + 1, cellColumn);     
+                Flood(cellRow + 1, cellColumn - 1); 
+                Flood(cellRow, cellColumn - 1);     
+                Flood(cellRow - 1, cellColumn - 1); 
             }
         }
 
@@ -325,7 +325,7 @@ namespace Minesweeper
 
         void GenerateMines(Cell cell)
         {
-            // funkar inte
+            // funkar dåligt
             for (int i = 0; i < GetMineCount(difficulty); i++)
             {
                 random = new Random();
