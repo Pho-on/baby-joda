@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,9 +19,9 @@ namespace Minesweeper
     {
         Difficulty difficulty = Difficulty.Normal;
 
+        Random random = new Random();
         Board board = new Board();
         Cell[,] state;
-        Random random;
 
         DateTime gameStartedAt;
 
@@ -160,14 +163,14 @@ namespace Minesweeper
 
             if (cell.type == Cell.Type.Empty)
             {
-                Flood(cellRow - 1, cellColumn);     
-                Flood(cellRow - 1, cellColumn + 1); 
-                Flood(cellRow, cellColumn + 1);     
-                Flood(cellRow + 1, cellColumn + 1); 
-                Flood(cellRow + 1, cellColumn);     
-                Flood(cellRow + 1, cellColumn - 1); 
-                Flood(cellRow, cellColumn - 1);     
-                Flood(cellRow - 1, cellColumn - 1); 
+                Flood(cellRow - 1, cellColumn);
+                Flood(cellRow - 1, cellColumn + 1);
+                Flood(cellRow, cellColumn + 1);
+                Flood(cellRow + 1, cellColumn + 1);
+                Flood(cellRow + 1, cellColumn);
+                Flood(cellRow + 1, cellColumn - 1);
+                Flood(cellRow, cellColumn - 1);
+                Flood(cellRow - 1, cellColumn - 1);
             }
         }
 
@@ -312,7 +315,7 @@ namespace Minesweeper
 
         bool IsInsideNoMineSpace(Cell cell, int r, int c)
         {
-            if (r < (cell.row + noMineSpace) && r > (cell.row - noMineSpace) && 
+            if (r < (cell.row + noMineSpace) && r > (cell.row - noMineSpace) &&
                 c < (cell.column + noMineSpace) && c > (cell.column - noMineSpace))
             {
                 return true;
@@ -328,18 +331,12 @@ namespace Minesweeper
             // funkar dåligt
             for (int i = 0; i < GetMineCount(difficulty); i++)
             {
-                random = new Random();
                 int r = random.Next(0, state.GetLength(0) - 1);
-
-                random = new Random();
                 int c = random.Next(0, state.GetLength(1) - 1);
 
                 while (IsInsideNoMineSpace(cell, r, c) || state[r, c].type == Cell.Type.Mine)
                 {
-                    random = new Random();
                     r = random.Next(0, state.GetLength(0) - 1);
-
-                    random = new Random();
                     c = random.Next(0, state.GetLength(1) - 1);
                 }
 
